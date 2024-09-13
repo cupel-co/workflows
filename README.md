@@ -45,11 +45,25 @@ jobs:
     uses: cupel-co/workflows/.github/workflows/generate-version.yml@vX.X.X
 ```
 
+### Notify Pull Request
+Workflow: [notify-pull-request.yml](.github/workflows/notify-pull-request.yml)
 
+Send a notification to the specified google chat
 
+#### Secrets
+| Name                      | Description                                 | Required | Default |
+|---------------------------|---------------------------------------------|----------|---------|
+| `google-chat-webhook-url` | The URL for sending messages to Google Chat | true     |         |
 
+#### Example
+```yaml
+jobs:
+  generate:
+    name: Generate
+    uses: cupel-co/workflows/.github/workflows/notify-pull-request.yml@vX.X.X
+```
 
-* [notify-pull-request.yml](.github/workflows/notify-pull-request.yml)
+# sdg
 * [opentofu-apply.yml](.github/workflows/opentofu-apply.yml)
 * [opentofu-destroy.yml](.github/workflows/opentofu-destroy.yml)
 * [opentofu-plan.yml](.github/workflows/opentofu-plan.yml)

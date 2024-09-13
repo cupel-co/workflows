@@ -1,0 +1,118 @@
+name: Generate Version
+
+on:
+  workflow_call:
+    outputs:
+      major:
+        description: The Major value
+        value: ${{ jobs.version.outputs.major }}
+      minor:
+        description: The Minor value
+        value: ${{ jobs.version.outputs.minor }}
+      patch:
+        description: The Patch value
+        value: ${{ jobs.version.outputs.patch }}
+      pre-release-tag:
+        description: The prerelease tag value
+        value: ${{ jobs.version.outputs.pre-release-tag }}
+      pre-release-tag-with-dash:
+        description: The prerelease tag with dash value
+        value: ${{ jobs.version.outputs.pre-release-tag-with-dash }}
+      pre-release-label:
+        description: The prerelease lable value
+        value: ${{ jobs.version.outputs.pre-release-label }}
+      pre-release-number:
+        description: The prerelease number value
+        value: ${{ jobs.version.outputs.pre-release-number }}
+      weighted-pre-release-number:
+        description: The weighted prerelease number value
+        value: ${{ jobs.version.outputs.weighted-pre-release-number }}
+      build-meta-data:
+        description: The build metadata value
+        value: ${{ jobs.version.outputs.build-meta-data }}
+      full-build-meta-data:
+        description: The full build metadata value
+        value: ${{ jobs.version.outputs.full-build-meta-data }}
+      major-minor-patch:
+        description: The major minor patch value
+        value: ${{ jobs.version.outputs.major-minor-patch }}
+      sem-ver:
+        description: The semantic version value
+        value: ${{ jobs.version.outputs.sem-ver }}
+      assembly-sem-ver:
+        description: The assembly semantic version value
+        value: ${{ jobs.version.outputs.assembly-sem-ver }}
+      assembly-sem-file-ver:
+        description: The file assembly semantic version value
+        value: ${{ jobs.version.outputs.assembly-sem-file-ver }}
+      full-sem-ver:
+        description: The full semantic version value
+        value: ${{ jobs.version.outputs.full-sem-ver }}
+      informational-version:
+        description: The informational version value
+        value: ${{ jobs.version.outputs.informational-version }}
+      branch-name:
+        description: The branch name value
+        value: ${{ jobs.version.outputs.branch-nam }}
+      escaped-branch-name:
+        description: The escaped branch name value
+        value: ${{ jobs.version.outputs.escaped-branch-name }}
+      sha:
+        description: The sha value
+        value: ${{ jobs.version.outputs.sha }}
+      short-sha:
+        description: The short sha value
+        value: ${{ jobs.version.outputs.short-sha }}
+      version-source-sha:
+        description: The version source sha value
+        value: ${{ jobs.version.outputs.version-source-sha }}
+      commits-since-version-source:
+        description: The commits since version source value
+        value: ${{ jobs.version.outputs.commits-since-version-source }}
+      uncommitted-changes:
+        description: The uncommitted changes value
+        value: ${{ jobs.version.outputs.uncommitted-changes }}
+      commit-date:
+        description: The commit date value
+        value: ${{ jobs.version.outputs.commit-date }}
+
+jobs:
+  version:
+    name: Version
+    runs-on: ubuntu-latest
+    outputs:
+      major: ${{ steps.generate.outputs.major }}
+      minor: ${{ steps.generate.outputs.minor }}
+      patch: ${{ steps.generate.outputs.patch }}
+      pre-release-tag: ${{ steps.generate.outputs.pre-release-tag }}
+      pre-release-tag-with-dash: ${{ steps.generate.outputs.pre-release-tag-with-dash }}
+      pre-release-label: ${{ steps.generate.outputs.pre-release-label }}
+      pre-release-number: ${{ steps.generate.outputs.pre-release-number }}
+      weighted-pre-release-number: ${{ steps.generate.outputs.weighted-pre-release-number }}
+      build-meta-data: ${{ steps.generate.outputs.build-meta-data }}
+      full-build-meta-data: ${{ steps.generate.outputs.full-build-meta-data }}
+      major-minor-patch: ${{ steps.generate.outputs.major-minor-patch }}
+      sem-ver: ${{ steps.generate.outputs.sem-ver }}
+      assembly-sem-ver: ${{ steps.generate.outputs.assembly-sem-ver }}
+      assembly-sem-file-ver: ${{ steps.generate.outputs.assembly-sem-file-ver }}
+      full-sem-ver: ${{ steps.generate.outputs.full-sem-ver }}
+      informational-version: ${{ steps.generate.outputs.informational-version }}
+      branch-name: ${{ steps.generate.outputs.branch-name }}
+      escaped-branch-name: ${{ steps.generate.outputs.escaped-branch-name }}
+      sha: ${{ steps.generate.outputs.sha }}
+      short-sha: ${{ steps.generate.outputs.short-sha }}
+      version-source-sha: ${{ steps.generate.outputs.version-source-sha }}
+      commits-since-version-source: ${{ steps.generate.outputs.commits-since-version-source }}
+      uncommitted-changes: ${{ steps.generate.outputs.uncommitted-changes }}
+      commit-date: ${{ steps.generate.outputs.commit-date }}
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Generate
+        id: generate
+        uses: cupel-co/actions/.github/actions/version/generate@v0.14.0        
+        

@@ -99,11 +99,51 @@ jobs:
       apply-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
 ```
 
+### OpenTofu Destroy
+Workflow: [opentofu-destroy.yml](.github/workflows/opentofu-destroy.yml)
+
+Destroy resources.
+
+#### Inputs
+| Name                  | Description                                                        | Required | Default            |
+|-----------------------|--------------------------------------------------------------------|----------|--------------------|
+| `destroy-args`        | Additional arguments to pass to the tofu destroy command           | false    |                    |
+| `init-args`           | Additional arguments to pass to the tofu init command              | false    |                    |
+| `oidc-role-arn`       | The ARN of the OIDC role to assume for AWS credentials             | true     |                    |
+| `region`              | The AWS region to use for the apply operation                      | true     |                    |
+| `use-primary-backend` | Specifies whether to use the primary backend during initialization | false    | `true`             |
+| `version`             | The version of OpenTofu to install                                 | false    | `1.8.1`            |
+| `working-directory`   | The directory where the infrastructure code is located             | false    | `./infrastructure` |
+| `workspace`           | The workspace to select or create during the apply process         | true     |                    |
+
+#### Secrets
+| Name           | Description                                              | Required | Default |
+|----------------|----------------------------------------------------------|----------|---------|
+| `destroy-args` | Additional arguments to pass to the tofu destroy command | false    |         |
+| `init-args`    | Additional arguments to pass to the tofu init command    | false    |         |
+
+#### Example
+```yaml
+jobs:
+  apply:
+    name: Apply
+    uses: cupel-co/workflows/.github/workflows/opentofu-destroy@vX.X.X
+    with:
+      destroy-args: '-var-file="variables/production/tfvars"'
+      init-args: '-var-file="variables/production/tfvars"'
+      oidc-role-arn: arn:aws:iam::012345678901:role/GitHub
+      region: ap-southeast-2
+      use-primary-backend: false
+      workspace: cicd-production
+    secrets:
+      apply-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
+      init-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
+```
 
 
 
 # sdg
-* [opentofu-destroy.yml](.github/workflows/opentofu-destroy.yml)
+* 
 * [opentofu-plan.yml](.github/workflows/opentofu-plan.yml)
 * [opentofu-plan-and-apply.yml](.github/workflows/opentofu-plan-and-apply.yml)
 * [tag.yml](.github/workflows/tag.yml)

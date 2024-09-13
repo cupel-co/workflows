@@ -183,11 +183,56 @@ jobs:
       plan-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
 ```
 
+### OpenTofu Plan and Apply
+Workflow: [opentofu-plan-and-apply.yml](.github/workflows/opentofu-plan-and-apply.yml)
+
+Plan and apply OpenTofu changes
+
+#### Inputs
+| Name                  | Description                                                                                   | Required | Default            |
+|-----------------------|-----------------------------------------------------------------------------------------------|----------|--------------------|
+| `apply-args`          | Additional arguments to pass to the tofu apply command                                        | false    |                    |
+| `artifact-name`       | The name of the artifact to upload after the plan step                                        | true     |                    |
+| `environment`         | The target environment where the apply operation will be executed (e.g., staging, production) | true     |                    |
+| `init-args`           | Additional arguments to pass to the tofu init command                                         | false    |                    |
+| `oidc-role-arn`       | The ARN of the OIDC role to assume for AWS credentials                                        | true     |                    |
+| `plan-args`           | Additional arguments to pass to the tofu plan command                                         | false    |                    |
+| `region`              | The AWS region to use for the apply operation                                                 | true     |                    |
+| `use-primary-backend` | Specifies whether to use the primary backend during initialization                            | false    | `true`             |
+| `version`             | The version of OpenTofu to install                                                            | false    | `1.8.1`            |
+| `working-directory`   | The directory where the infrastructure code is located                                        | false    | `./infrastructure` |
+| `workspace`           | The workspace to select or create during the apply process                                    | true     |                    |
+
+#### Secrets
+| Name           | Description                                                                                 | Required | Default |
+|----------------|---------------------------------------------------------------------------------------------|----------|---------|
+| `apply-args`   | Additional arguments that contain secret values that need to be passed to the apply command | false    |         |
+| `init-args`    | Additional arguments to pass to the tofu init command                                       | false    |         |
+| `plan-args`    | Additional arguments to pass to the tofu plan command                                       | false    |         |
+
+#### Example
+```yaml
+jobs:
+  deploy:
+    name: Deploy
+    uses: cupel-co/workflows/.github/workflows/opentofu-plan-and-apply@vX.X.X
+    with:
+      artifact-name: cicd-production
+      environment: production
+      init-args: '-var-file="variables/production.tfvars"'
+      oidc-role-arn: arn:aws:iam::012345678901:role/GitHub
+      plan-args: '-var-file="variables/production.tfvars"'
+      region: ap-southeast-2
+      use-primary-backend: false
+      workspace: cicd-production
+    secrets:
+      init-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
+      plan-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
+```
+
 
 
 # sdg
-* [opentofu-plan.yml](.github/workflows/opentofu-plan.yml)
-* [opentofu-plan-and-apply.yml](.github/workflows/opentofu-plan-and-apply.yml)
 * [tag.yml](.github/workflows/tag.yml)
 * [tflint.yml](.github/workflows/tflint.yml)
 * [tfsec.yml](.github/workflows/tfsec.yml)

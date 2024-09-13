@@ -63,8 +63,46 @@ jobs:
     uses: cupel-co/workflows/.github/workflows/notify-pull-request.yml@vX.X.X
 ```
 
+### OpenTofu Apply
+Workflow: [opentofu-apply.yml](.github/workflows/opentofu-apply.yml)
+
+Apply OpenTofu changes.
+
+#### Inputs
+| Name            | Description                                                                                   | Required | Default |
+|-----------------|-----------------------------------------------------------------------------------------------|----------|---------|
+| `artifact-name` | The name of the artifact to download for the apply step                                       | true     |         |
+| `environment`   | The target environment where the apply operation will be executed (e.g., staging, production) | true     |         |
+| `apply-args`    | Additional arguments to pass to the tofu apply command                                        | false    |         |
+| `oidc-role-arn` | The ARN of the OIDC role to assume for AWS credentials                                        | true     |         |
+| `region`        | The AWS region to use for the apply operation                                                 | true     |         |
+| `version`       | The version of OpenTofu to install                                                            | false    | `1.8.1` |
+
+#### Secrets
+| Name         | Description                                                                                 | Required | Default |
+|--------------|---------------------------------------------------------------------------------------------|----------|---------|
+| `apply-args` | Additional arguments that contain secret values that need to be passed to the apply command | false    |         |
+
+#### Example
+```yaml
+jobs:
+  apply:
+    name: Apply
+    uses: cupel-co/workflows/.github/workflows/opentofu-apply@vX.X.X
+    with:
+      artifact-name: cicd-production
+      environment: Production
+      apply-args: '-var-file="variables/production/tfvars"'
+      oidc-role-arn: arn:aws:iam::012345678901:role/GitHub
+      region: ap-southeast-2
+    secrets:
+      apply-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
+```
+
+
+
+
 # sdg
-* [opentofu-apply.yml](.github/workflows/opentofu-apply.yml)
 * [opentofu-destroy.yml](.github/workflows/opentofu-destroy.yml)
 * [opentofu-plan.yml](.github/workflows/opentofu-plan.yml)
 * [opentofu-plan-and-apply.yml](.github/workflows/opentofu-plan-and-apply.yml)

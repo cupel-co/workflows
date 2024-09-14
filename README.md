@@ -45,6 +45,41 @@ jobs:
     uses: cupel-co/workflows/.github/workflows/generate-version.yml@vX.X.X
 ```
 
+### GitHub Release
+Workflow: [github-release.yml](.github/workflows/github-release.yml)
+
+Tag, create a GitHub release and notify.
+
+#### Inputs
+| Name   | Description   | Required | Default |
+|--------|---------------|----------|---------|
+| `tags` | The tag value | true     |         |
+
+#### Secrets
+| Name                      | Description                                          | Required | Default |
+|---------------------------|------------------------------------------------------|----------|---------|
+| `gpg-key`                 | The private GPG key used for signing the Git tag     | true     |         |
+| `gpg-password`            | The passphrase for the GPG private key               | true     |         |
+| `google-chat-webhook-url` | The webhook URL to send notifications to Google Chat | true     |         |
+
+#### Example
+```yaml
+jobs:
+  release:
+    name: Release
+    uses: ./.github/workflows/release.yml
+    needs:
+      - generate
+    permissions:
+      contents: write
+    with:
+      tag: "v0.0.1"
+    secrets:
+      gpg-key: ${{ secrets.GH_GPG_PRIVATE_KEY }}
+      gpg-password: ${{ secrets.GH_GPG_PRIVATE_KEY_PASSWORD }}
+      google-chat-webhook-url: ${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}
+```
+
 ### Notify Pull Request
 Workflow: [notify-pull-request.yml](.github/workflows/notify-pull-request.yml)
 
@@ -233,6 +268,6 @@ jobs:
 
 
 # sdg
-* [tag.yml](.github/workflows/tag.yml)
+* [release.yml](.github/workflows/tag.yml)
 * [tflint.yml](.github/workflows/tflint.yml)
 * [tfsec.yml](.github/workflows/tfsec.yml)

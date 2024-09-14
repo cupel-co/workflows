@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: The tag value
+        required: true
+        type: string
+    secrets:
+      gpg-key:
+        description: The private GPG key used for signing the Git tag.
+        required: true
+      gpg-password:
+        description: The passphrase for the GPG private key.
+        required: true
+      google-chat-webhook-url:
+        description: The webhook URL to send notifications to Google Chat.
+        required: true
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Tag
+        uses: cupel-co/actions/.github/actions/github/tag@v0.14.0
+        with:
+          gpg-key: "${{ secrets.gpg-key }}"
+          gpg-password: "${{ secrets.gpg-password }}"
+          tag: "${{ inputs.tag }}"
+      - name: Release
+        uses: cupel-co/actions/.github/actions/github/release@v0.14.0
+        with:
+          tag: "${{ inputs.tag }}"
+      - name: Notify
+        uses: cupel-co/actions/.github/actions/notify/release@v0.14.0
+        with:
+          google-chat-webhook-url: "${{ secrets.google-chat-webhook-url }}"
+          tag: "${{ inputs.tag }}"
+      

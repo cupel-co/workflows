@@ -285,4 +285,20 @@ jobs:
     uses: cupel-co/workflows/.github/workflows/tflint@vX.X.X
 ```
 
-* [tfsec.yml](.github/workflows/tfsec.yml)
+### TF Sec
+Workflow: [tfsec.yml](.github/workflows/tfsec.yml)
+
+Analyse OpenTofu code
+
+#### Inputs
+| Name                  | Description                                            | Required | Default            |
+|-----------------------|--------------------------------------------------------|----------|--------------------|
+| `working-directory`   | The directory where the infrastructure code is located | false    | `./infrastructure` |
+
+#### Example
+```yaml
+jobs:
+  scan:
+    name: Scan
+    uses: cupel-co/workflows/.github/workflows/tfsec@vX.X.X
+```

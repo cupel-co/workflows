@@ -1,4 +1,6 @@
 # GitHub Workflows
+[![Release](https://github.com/cupel-co/workflows/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/cupel-co/workflows/actions/workflows/release.yml?query=branch%3Amain)
+
 Reusable workflows for GitHub
 
 ## Workflows

@@ -267,9 +267,22 @@ jobs:
       plan-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
 ```
 
+### TF Lint
+Workflow: [tflint.yml](.github/workflows/tflint.yml)
 
+Lint OpenTofu files
 
-# sdg
-* [release.yml](.github/workflows/tag.yml)
-* [tflint.yml](.github/workflows/tflint.yml)
+#### Inputs
+| Name                  | Description                                            | Required | Default            |
+|-----------------------|--------------------------------------------------------|----------|--------------------|
+| `working-directory`   | The directory where the infrastructure code is located | false    | `./infrastructure` |
+
+#### Example
+```yaml
+jobs:
+  scan:
+    name: Scan
+    uses: cupel-co/workflows/.github/workflows/tflint@vX.X.X
+```
+
 * [tfsec.yml](.github/workflows/tfsec.yml)

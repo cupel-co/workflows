@@ -1,0 +1,25 @@
+name: TF Lint
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: The directory where the infrastructure code is located.
+        default: ./infrastructure
+        required: false
+        type: string
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Scan
+        uses: cupel-co/actions/.github/actions/tflint@v0.14.0
+        with: 
+          working-directory: ${{ inputs.working-directory }}

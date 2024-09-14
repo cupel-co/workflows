@@ -1,0 +1,73 @@
+name: Destroy
+
+on:
+  workflow_call:
+    inputs:
+      destroy-args:
+        description: Additional arguments to pass to the tofu destroy command.
+        required: false
+        type: string
+      init-args:
+        description: Additional arguments to pass to the tofu init command.
+        required: false
+        type: string
+      oidc-role-arn:
+        description: The ARN of the OIDC role to assume for AWS credentials.
+        required: true
+        type: string
+      region:
+        description: The AWS region to use for the apply operation.
+        required: true
+        type: string
+      use-primary-backend:
+        description: Specifies whether to use the primary backend during initialization.
+        default: 'true'
+        required: false
+        type: string
+      version:
+        description: The version of OpenTofu to install.
+        default: 1.8.1
+        required: false
+        type: string
+      working-directory:
+        description: The directory where the infrastructure code is located.
+        default: ./infrastructure
+        required: false
+        type: string
+      workspace:
+        description: The workspace to select or create during the apply process.
+        required: true
+        type: string
+    secrets:
+      destroy-args:
+        description: Additional arguments to pass to the tofu destroy command.
+        required: false
+      init-args:
+        description: Additional arguments to pass to the tofu init command.
+        required: false
+
+jobs:
+  destroy:
+    name: Destroy
+    runs-on: ubuntu-latest
+    environment: "${{ inputs.environment }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: "${{ inputs.oidc-role-arn }}"
+          aws-region: "${{ inputs.region }}"
+      - name: Destroy
+        uses: cupel-co/actions/.github/actions/opentofu/destroy@v0.13.0
+        with:
+          destroy-args: "${{ inputs.destroy-args }} ${{ secrets.destroy-args }}"
+          init-args: "${{ inputs.init-args }} ${{ secrets.init-args }}"
+          use-primary-backend: "${{ inputs.use-primary-backend }}"
+          version: "${{ inputs.version }}"
+          working-directory: "${{ inputs.working-directory }}"
+          workspace: "${{ inputs.workspace }}"

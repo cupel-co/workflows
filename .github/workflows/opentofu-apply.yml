@@ -1,0 +1,60 @@
+name: Apply
+
+on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: The name of the artifact to download for the apply step.
+        required: true
+        type: string
+      environment:
+        description: The target environment where the apply operation will be executed (e.g., staging, production).
+        required: true
+        type: string
+      apply-args:
+        description: Additional arguments to pass to the tofu apply command.
+        required: false
+        type: string
+      oidc-role-arn:
+        description: The ARN of the OIDC role to assume for AWS credentials.
+        required: true
+        type: string
+      region:
+        description: The AWS region to use for the apply operation.
+        required: true
+        type: string
+      version:
+        description: The version of OpenTofu to install.
+        default: 1.8.1
+        required: false
+        type: string
+    secrets:
+      apply-args:
+        description: Additional arguments that contain secret values that need to be passed to the apply command.
+        required: false
+
+jobs:
+  apply:
+    name: Apply
+    runs-on: ubuntu-latest
+    environment: "${{ inputs.environment }}"
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: "${{ inputs.oidc-role-arn }}"
+          aws-region: "${{ inputs.region }}"
+      - name: "Download ${{ inputs.artifact-name }}"
+        uses: cupel-co/actions/.github/actions/artifact/download@v0.14.0
+        with:
+          name: "${{ inputs.artifact-name }}"
+          path: "./"
+      - name: Apply
+        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.14.0
+        with:
+          apply-args: "${{ inputs.apply-args }} ${{ secrets.apply-args }}"
+          version: "${{ inputs.version }}"
+      - name: "Delete ${{ inputs.artifact-name }}"
+        uses: cupel-co/actions/.github/actions/artifact/delete@v0.14.0
+        with:
+          name: "${{ inputs.artifact-name }}"

@@ -1,5 +1,5 @@
 # GitHub Workflows
-[![Release](https://github.com/cupel-co/workflows/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/cupel-co/workflows/actions/workflows/release.yml?query=branch%3Amain)
+[![Deploy](https://github.com/cupel-co/workflows/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/cupel-co/workflows/actions/workflows/deploy.yml?query=branch%3Amain)
 
 Reusable workflows for GitHub
 
@@ -10,6 +10,11 @@ Workflow: [generate-version.yml](.github/workflows/generate-version.yml)
 Generate a version from the commit history. 
 
 A file named `GitVersion.yml` in the `./` directory is required for this to work, please see [GitVersion.yml](./GitVersion.yml).
+
+#### Inputs
+| Name        | Description                        | Required | Default       |
+|-------------|------------------------------------|----------|---------------|
+| `flow-type` | The flow type to use (GITHUB_FLOW) | true     | `GITHUB_FLOW` |
 
 #### Outputs
 | Name                           | Description                               |
@@ -58,11 +63,11 @@ Tag, create a GitHub release and notify.
 | `tags` | The tag value | true     |         |
 
 #### Secrets
-| Name                      | Description                                          | Required | Default |
-|---------------------------|------------------------------------------------------|----------|---------|
-| `gpg-key`                 | The private GPG key used for signing the Git tag     | true     |         |
-| `gpg-password`            | The passphrase for the GPG private key               | true     |         |
-| `google-chat-webhook-url` | The webhook URL to send notifications to Google Chat | true     |         |
+| Name           | Description                                      | Required | Default |
+|----------------|--------------------------------------------------|----------|---------|
+| `gpg-key`      | The private GPG key used for signing the Git tag | true     |         |
+| `gpg-password` | The passphrase for the GPG private key           | true     |         |
+| `token`        | Token for github interaction                     | true     |         |
 
 #### Example
 ```yaml
@@ -79,7 +84,7 @@ jobs:
     secrets:
       gpg-key: ${{ secrets.GH_GPG_PRIVATE_KEY }}
       gpg-password: ${{ secrets.GH_GPG_PRIVATE_KEY_PASSWORD }}
-      google-chat-webhook-url: ${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}
+      token: ${{ github.token }}
 ```
 
 ### Notify Pull Request

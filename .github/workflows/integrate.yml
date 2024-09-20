@@ -1,4 +1,4 @@
-name: Release
+name: Integrate
 
 on:
   push:
@@ -26,4 +26,4 @@ jobs:
     secrets:
       gpg-key: "${{ secrets.GH_GPG_PRIVATE_KEY }}"
       gpg-password: "${{ secrets.GH_GPG_PRIVATE_KEY_PASSWORD }}"
-      google-chat-webhook-url: "${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}"
+      token: "${{ secrets.GH_RELEASE_PAT }}"

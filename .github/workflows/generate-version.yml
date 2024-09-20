@@ -2,6 +2,13 @@ name: Generate Version
 
 on:
   workflow_call:
+    inputs:
+      flow-type:
+        description: 'The flow type to use (GITHUB_FLOW)'
+        required: false
+        default: GITHUB_FLOW
+        type: string
+
     outputs:
       major:
         description: The Major value
@@ -114,5 +121,7 @@ jobs:
           fetch-tags: true
       - name: Generate
         id: generate
-        uses: cupel-co/actions/.github/actions/version/generate@v0.14.0        
+        uses: cupel-co/actions/.github/actions/version/generate@v0.16.0
+        with: 
+          flow-type: ${{ inputs.flow-type }}
         

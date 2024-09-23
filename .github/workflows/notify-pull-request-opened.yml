@@ -1,9 +1,10 @@
-name: Integrate
+name: Notify PR
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - opened
+      - reopened
 
 concurrency:
   cancel-in-progress: false

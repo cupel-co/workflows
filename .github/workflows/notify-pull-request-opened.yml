@@ -1,0 +1,17 @@
+name: Integrate
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  cancel-in-progress: false
+  group: "${{ github.workflow }}-${{ github.ref_name }}"
+
+jobs:
+  notify:
+    name: Notify
+    uses: ./.github/workflows/notify-pull-request.yml
+    secrets:
+      google-chat-webhook-url: "${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}"

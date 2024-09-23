@@ -103,6 +103,28 @@ jobs:
   generate:
     name: Generate
     uses: cupel-co/workflows/.github/workflows/notify-pull-request.yml@vX.X.X
+    with:
+      google-chat-webhook-url: "${{ secrets.google-chat-webhook-url }}"
+```
+
+### Notify Release
+Workflow: [notify-release.yml](.github/workflows/notify-release.yml)
+
+Send a notification to the specified google chat
+
+#### Secrets
+| Name                      | Description                                 | Required | Default |
+|---------------------------|---------------------------------------------|----------|---------|
+| `google-chat-webhook-url` | The URL for sending messages to Google Chat | true     |         |
+
+#### Example
+```yaml
+jobs:
+  generate:
+    name: Generate
+    uses: cupel-co/workflows/.github/workflows/notify-release.yml@vX.X.X
+    with:
+      google-chat-webhook-url: "${{ secrets.google-chat-webhook-url }}"
 ```
 
 ### OpenTofu Apply

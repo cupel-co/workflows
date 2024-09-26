@@ -50,7 +50,7 @@ jobs:
   destroy:
     name: Destroy
     runs-on: ubuntu-latest
-    environment: "${{ inputs.environment }}"
+    environment: '${{ inputs.environment }}'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -60,14 +60,14 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: "${{ inputs.oidc-role-arn }}"
-          aws-region: "${{ inputs.region }}"
+          role-to-assume: '${{ inputs.oidc-role-arn }}'
+          aws-region: '${{ inputs.region }}'
       - name: Destroy
-        uses: cupel-co/actions/.github/actions/opentofu/destroy@v0.17.0
+        uses: cupel-co/actions/.github/actions/opentofu/destroy@v0.19.1
         with:
-          destroy-args: "${{ inputs.destroy-args }} ${{ secrets.destroy-args }}"
-          init-args: "${{ inputs.init-args }} ${{ secrets.init-args }}"
-          use-primary-backend: "${{ inputs.use-primary-backend }}"
-          version: "${{ inputs.version }}"
-          working-directory: "${{ inputs.working-directory }}"
-          workspace: "${{ inputs.workspace }}"
+          destroy-args: '${{ inputs.destroy-args }} ${{ secrets.destroy-args }}'
+          init-args: '${{ inputs.init-args }} ${{ secrets.init-args }}'
+          use-primary-backend: '${{ inputs.use-primary-backend }}'
+          version: '${{ inputs.version }}'
+          working-directory: '${{ inputs.working-directory }}'
+          workspace: '${{ inputs.workspace }}'

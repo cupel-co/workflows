@@ -54,6 +54,9 @@ on:
       apply-args:
         description: Additional arguments that contain secret values that need to be passed to the apply command.
         required: false
+      google-chat-webhook-url:
+        description: The Webhook URL for the chat to send the message to
+        required: false
       init-args:
         description: Additional arguments to pass to the tofu init command.
         required: false
@@ -74,46 +77,57 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: "${{ inputs.oidc-role-arn }}"
-          aws-region: "${{ inputs.region }}"
+          role-to-assume: '${{ inputs.oidc-role-arn }}'
+          aws-region: '${{ inputs.region }}'
       - name: Plan
-        uses: cupel-co/actions/.github/actions/opentofu/plan@v0.17.0
+        uses: cupel-co/actions/.github/actions/opentofu/plan@v0.19.1
         with:
-          init-args: "${{ inputs.init-args }} ${{ secrets.init-args }}"
-          plan-args: "${{ inputs.plan-args }} ${{ secrets.plan-args }}"
-          use-primary-backend: "${{ inputs.use-primary-backend }}"
-          version: "${{ inputs.version }}"
-          working-directory: "${{ inputs.working-directory }}"
-          workspace: "${{ inputs.workspace }}"
-      - name: "Upload ${{ inputs.artifact-name }}"
-        uses: cupel-co/actions/.github/actions/artifact/upload@v0.17.0
+          init-args: '${{ inputs.init-args }} ${{ secrets.init-args }}'
+          plan-args: '${{ inputs.plan-args }} ${{ secrets.plan-args }}'
+          use-primary-backend: '${{ inputs.use-primary-backend }}'
+          version: '${{ inputs.version }}'
+          working-directory: '${{ inputs.working-directory }}'
+          workspace: '${{ inputs.workspace }}'
+      - name: 'Upload ${{ inputs.artifact-name }}'
+        uses: cupel-co/actions/.github/actions/artifact/upload@v0.19.1
         with:
-          name: "${{ inputs.artifact-name }}"
-          path: "${{ inputs.working-directory }}"
+          name: '${{ inputs.artifact-name }}'
+          path: '${{ inputs.working-directory }}'
           retention-days: 1
   apply:
     name: Apply
     runs-on: ubuntu-latest
-    environment: "${{ inputs.environment }}"
+    environment: '${{ inputs.environment }}'
     needs:
-      plan
+      - plan
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: "${{ inputs.oidc-role-arn }}"
-          aws-region: "${{ inputs.region }}"
-      - name: "Download ${{ inputs.artifact-name }}"
-        uses: cupel-co/actions/.github/actions/artifact/download@v0.17.0
+          role-to-assume: '${{ inputs.oidc-role-arn }}'
+          aws-region: '${{ inputs.region }}'
+      - name: 'Download ${{ inputs.artifact-name }}'
+        uses: cupel-co/actions/.github/actions/artifact/download@v0.19.1
         with:
-          name: "${{ inputs.artifact-name }}"
-          path: "./"
+          name: '${{ inputs.artifact-name }}'
+          path: './'
       - name: Apply
-        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.17.0
+        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.19.1
         with:
-          apply-args: "${{ inputs.apply-args }} ${{ secrets.apply-args }}"
-          version: "${{ inputs.version }}"
-      - name: "Delete ${{ inputs.artifact-name }}"
-        uses: cupel-co/actions/.github/actions/artifact/delete@v0.17.0
+          apply-args: '${{ inputs.apply-args }} ${{ secrets.apply-args }}'
+          version: '${{ inputs.version }}'
+      - name: 'Delete ${{ inputs.artifact-name }}'
+        uses: cupel-co/actions/.github/actions/artifact/delete@v0.19.1
         with:
-          name: "${{ inputs.artifact-name }}"
+          name: '${{ inputs.artifact-name }}'
+  notify:
+    name: Notify
+    runs-on: ubuntu-latest
+    needs:
+      - apply
+    steps:
+      - name: Apply
+        uses: cupel-co/actions/.github/actions/notify/deployment@v0.19.1
+        with:
+          environment: '${{ inputs.environment }}'
+          google-chat-webhook-url: '${{ secrets.google-chat-webhook-url }}'

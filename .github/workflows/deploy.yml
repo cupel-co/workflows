@@ -8,7 +8,7 @@ on:
 
 concurrency:
   cancel-in-progress: false
-  group: "${{ github.workflow }}-${{ github.ref_name }}"
+  group: '${{ github.workflow }}-${{ github.ref_name }}'
 
 jobs:
   generate:
@@ -19,6 +19,6 @@ jobs:
     name: Release
     uses: ./.github/workflows/notify-release.yml
     with:
-      tag: v${{ needs.generate.outputs.sem-ver }}
+      tag: 'v${{ needs.generate.outputs.sem-ver }}'
     secrets:
-      google-chat-webhook-url: "${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}"
+      google-chat-webhook-url: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'

@@ -7,7 +7,7 @@ on:
 
 concurrency:
   cancel-in-progress: false
-  group: "${{ github.workflow }}-${{ github.ref_name }}"
+  group: '${{ github.workflow }}-${{ github.ref_name }}'
 
 jobs:
   generate:
@@ -22,8 +22,8 @@ jobs:
     permissions:
       contents: write
     with:
-      tag: "v${{ needs.generate.outputs.sem-ver }}"
+      tag: 'v${{ needs.generate.outputs.sem-ver }}'
     secrets:
-      gpg-key: "${{ secrets.GH_GPG_PRIVATE_KEY }}"
-      gpg-password: "${{ secrets.GH_GPG_PRIVATE_KEY_PASSWORD }}"
-      token: "${{ secrets.GH_RELEASE_PAT }}"
+      gpg-key: '${{ secrets.GH_GPG_PRIVATE_KEY }}'
+      gpg-password: '${{ secrets.GH_GPG_PRIVATE_KEY_PASSWORD }}'
+      token: '${{ secrets.GH_RELEASE_PAT }}'

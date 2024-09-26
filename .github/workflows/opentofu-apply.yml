@@ -37,24 +37,24 @@ jobs:
   apply:
     name: Apply
     runs-on: ubuntu-latest
-    environment: "${{ inputs.environment }}"
+    environment: '${{ inputs.environment }}'
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: "${{ inputs.oidc-role-arn }}"
-          aws-region: "${{ inputs.region }}"
-      - name: "Download ${{ inputs.artifact-name }}"
-        uses: cupel-co/actions/.github/actions/artifact/download@v0.17.0
+          role-to-assume: '${{ inputs.oidc-role-arn }}'
+          aws-region: '${{ inputs.region }}'
+      - name: 'Download ${{ inputs.artifact-name }}'
+        uses: cupel-co/actions/.github/actions/artifact/download@v0.19.1
         with:
-          name: "${{ inputs.artifact-name }}"
-          path: "./"
+          name: '${{ inputs.artifact-name }}'
+          path: './'
       - name: Apply
-        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.17.0
+        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.19.1
         with:
-          apply-args: "${{ inputs.apply-args }} ${{ secrets.apply-args }}"
-          version: "${{ inputs.version }}"
-      - name: "Delete ${{ inputs.artifact-name }}"
-        uses: cupel-co/actions/.github/actions/artifact/delete@v0.17.0
+          apply-args: '${{ inputs.apply-args }} ${{ secrets.apply-args }}'
+          version: '${{ inputs.version }}'
+      - name: 'Delete ${{ inputs.artifact-name }}'
+        uses: cupel-co/actions/.github/actions/artifact/delete@v0.19.1
         with:
-          name: "${{ inputs.artifact-name }}"
+          name: '${{ inputs.artifact-name }}'

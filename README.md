@@ -268,11 +268,12 @@ Plan and apply OpenTofu changes
 | `workspace`           | The workspace to select or create during the apply process                                    | true     |                    |
 
 #### Secrets
-| Name           | Description                                                                                 | Required | Default |
-|----------------|---------------------------------------------------------------------------------------------|----------|---------|
-| `apply-args`   | Additional arguments that contain secret values that need to be passed to the apply command | false    |         |
-| `init-args`    | Additional arguments to pass to the tofu init command                                       | false    |         |
-| `plan-args`    | Additional arguments to pass to the tofu plan command                                       | false    |         |
+| Name                      | Description                                           | Required | Default |
+|---------------------------|-------------------------------------------------------|----------|---------|
+| `apply-args`              | Additional arguments to pass to the tofu init command | false    |         |
+| `google-chat-webhook-url` | The Webhook URL for the chat to send the message to   | false    |         |
+| `init-args`               | Additional arguments to pass to the tofu init command | false    |         |
+| `plan-args`               | Additional arguments to pass to the tofu plan command | false    |         |
 
 #### Example
 ```yaml
@@ -290,6 +291,7 @@ jobs:
       use-primary-backend: false
       workspace: cicd-production
     secrets:
+      google-chat-webhook-url: ${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}
       init-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
       plan-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
 ```

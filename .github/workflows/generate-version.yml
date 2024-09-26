@@ -88,30 +88,30 @@ jobs:
     name: Version
     runs-on: ubuntu-latest
     outputs:
-      major: ${{ steps.generate.outputs.major }}
-      minor: ${{ steps.generate.outputs.minor }}
-      patch: ${{ steps.generate.outputs.patch }}
-      pre-release-tag: ${{ steps.generate.outputs.pre-release-tag }}
-      pre-release-tag-with-dash: ${{ steps.generate.outputs.pre-release-tag-with-dash }}
-      pre-release-label: ${{ steps.generate.outputs.pre-release-label }}
-      pre-release-number: ${{ steps.generate.outputs.pre-release-number }}
-      weighted-pre-release-number: ${{ steps.generate.outputs.weighted-pre-release-number }}
-      build-meta-data: ${{ steps.generate.outputs.build-meta-data }}
-      full-build-meta-data: ${{ steps.generate.outputs.full-build-meta-data }}
-      major-minor-patch: ${{ steps.generate.outputs.major-minor-patch }}
-      sem-ver: ${{ steps.generate.outputs.sem-ver }}
-      assembly-sem-ver: ${{ steps.generate.outputs.assembly-sem-ver }}
-      assembly-sem-file-ver: ${{ steps.generate.outputs.assembly-sem-file-ver }}
-      full-sem-ver: ${{ steps.generate.outputs.full-sem-ver }}
-      informational-version: ${{ steps.generate.outputs.informational-version }}
-      branch-name: ${{ steps.generate.outputs.branch-name }}
-      escaped-branch-name: ${{ steps.generate.outputs.escaped-branch-name }}
-      sha: ${{ steps.generate.outputs.sha }}
-      short-sha: ${{ steps.generate.outputs.short-sha }}
-      version-source-sha: ${{ steps.generate.outputs.version-source-sha }}
-      commits-since-version-source: ${{ steps.generate.outputs.commits-since-version-source }}
-      uncommitted-changes: ${{ steps.generate.outputs.uncommitted-changes }}
-      commit-date: ${{ steps.generate.outputs.commit-date }}
+      major: '${{ steps.generate.outputs.major }}'
+      minor: '${{ steps.generate.outputs.minor }}'
+      patch: '${{ steps.generate.outputs.patch }}'
+      pre-release-tag: '${{ steps.generate.outputs.pre-release-tag }}'
+      pre-release-tag-with-dash: '${{ steps.generate.outputs.pre-release-tag-with-dash }}'
+      pre-release-label: '${{ steps.generate.outputs.pre-release-label }}'
+      pre-release-number: '${{ steps.generate.outputs.pre-release-number }}'
+      weighted-pre-release-number: '${{ steps.generate.outputs.weighted-pre-release-number }}'
+      build-meta-data: '${{ steps.generate.outputs.build-meta-data }}'
+      full-build-meta-data: '${{ steps.generate.outputs.full-build-meta-data }}'
+      major-minor-patch: '${{ steps.generate.outputs.major-minor-patch }}'
+      sem-ver: '${{ steps.generate.outputs.sem-ver }}'
+      assembly-sem-ver: '${{ steps.generate.outputs.assembly-sem-ver }}'
+      assembly-sem-file-ver: '${{ steps.generate.outputs.assembly-sem-file-ver }}'
+      full-sem-ver: '${{ steps.generate.outputs.full-sem-ver }}'
+      informational-version: '${{ steps.generate.outputs.informational-version }}'
+      branch-name: '${{ steps.generate.outputs.branch-name }}'
+      escaped-branch-name: '${{ steps.generate.outputs.escaped-branch-name }}'
+      sha: '${{ steps.generate.outputs.sha }}'
+      short-sha: '${{ steps.generate.outputs.short-sha }}'
+      version-source-sha: '${{ steps.generate.outputs.version-source-sha }}'
+      commits-since-version-source: '${{ steps.generate.outputs.commits-since-version-source }}'
+      uncommitted-changes: '${{ steps.generate.outputs.uncommitted-changes }}'
+      commit-date: '${{ steps.generate.outputs.commit-date }}'
       
     steps:
       - name: Checkout
@@ -121,7 +121,7 @@ jobs:
           fetch-tags: true
       - name: Generate
         id: generate
-        uses: cupel-co/actions/.github/actions/version/generate@v0.17.0
+        uses: cupel-co/actions/.github/actions/version/generate@v0.19.1
         with: 
-          flow-type: ${{ inputs.flow-type }}
+          flow-type: '${{ inputs.flow-type }}'
         

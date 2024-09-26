@@ -1,5 +1,6 @@
 # GitHub Workflows
-[![Deploy](https://github.com/cupel-co/workflows/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/cupel-co/workflows/actions/workflows/deploy.yml?query=branch%3Amain)
+[![Deploy](https://github.com/cupel-co/workflows/actions/workflows/deploy.yml/badge.svg)](https://github.com/cupel-co/workflows/actions/workflows/deploy.yml)
+[![Integrate](https://github.com/cupel-co/workflows/actions/workflows/integrate.yml/badge.svg?branch=main)](https://github.com/cupel-co/workflows/actions/workflows/integrate.yml?query=branch%3Amain)
 
 Reusable workflows for GitHub
 

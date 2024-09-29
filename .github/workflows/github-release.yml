@@ -36,8 +36,8 @@ jobs:
           gpg-password: '${{ secrets.gpg-password }}'
           tag: '${{ inputs.tag }}'
 
-  release:
-    name: Release
+  github:
+    name: GitHub
     runs-on: ubuntu-latest
     needs:
       - tag
@@ -58,10 +58,10 @@ jobs:
     name: Notify
     runs-on: ubuntu-latest
     needs:
-      - release
+      - github
     steps:
       - name: Release
         uses: cupel-co/actions/.github/actions/notify/release@v0.19.2
         with:
-          google-chat-webhook-url: "${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}"
+          google-chat-webhook-url: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
           tag: '${{ inputs.tag }}'

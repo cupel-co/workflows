@@ -8,6 +8,9 @@ on:
         required: true
         type: string
     secrets:
+      google-chat-webhook-url:
+        description: The Webhook URL for the chat to send the message to
+        required: true
       gpg-key:
         description: The private GPG key used for signing the Git tag.
         required: true
@@ -63,5 +66,5 @@ jobs:
       - name: Release
         uses: cupel-co/actions/.github/actions/notify/release@v0.19.2
         with:
-          google-chat-webhook-url: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
+          google-chat-webhook-url: '${{ secrets.google-chat-webhook-url }}'
           tag: '${{ inputs.tag }}'

@@ -24,6 +24,7 @@ jobs:
     with:
       tag: 'v${{ needs.generate.outputs.sem-ver }}'
     secrets:
+      google-chat-webhook-url: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
       gpg-key: '${{ secrets.GH_GPG_PRIVATE_KEY }}'
       gpg-password: '${{ secrets.GH_GPG_PRIVATE_KEY_PASSWORD }}'
       token: '${{ secrets.GH_RELEASE_PAT }}'

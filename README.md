@@ -118,7 +118,7 @@ jobs:
       pull-requests: write
     with:
       base-ref: main
-      head-ref: 
+      head-ref: ${{ github.ref_name }}
       comment-behaviour: update
       currency: AUD
       template: |
@@ -149,7 +149,7 @@ jobs:
       pull-requests: write
     with:
       base-ref: main
-      head-ref:
+      head-ref: ${{ github.ref_name }}
       comment-behaviour: update
       currency: AUD
       workspace-prefix: github-repositories-

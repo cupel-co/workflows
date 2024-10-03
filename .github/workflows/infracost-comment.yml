@@ -1,0 +1,105 @@
+name: Apply
+
+on:
+  workflow_call:
+    inputs:
+      base-ref:
+        description: The name of the base ref, generally this is main, to checkout
+        default: main
+        required: false
+        type: string
+      comment-behaviour:
+        description: The behaviour for the comment
+        default: update
+        required: false
+        type: choice
+        options:
+          - delete-and-new
+          - hide-and-new
+          - new
+          - update
+      currency:
+        description: The currency to use for the report
+        default: AUD
+        required: false
+        type: string
+      head-ref:
+        description: The name of the head ref, generally this is feature branch, to checkout
+        required: true
+        type: string
+      template:
+        description: The infracost template
+        required: false
+        type: string
+      version:
+        description: The version of Infracost to install
+        default: 0.10.x
+        required: false
+        type: string
+      workspace-prefix:
+        description: The prefix for the workspace name
+        required: false
+        type: string
+    secrets:
+      infracost-api-key:
+        description: The infracost API key
+        required: true
+
+jobs:
+  cost:
+    name: cost
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ${{ inputs.base-ref }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          ref: ${{ inputs.base-ref }}
+      - name: Breakdown ${{ inputs.base-ref }}
+        uses: cupel-co/actions/.github/actions/infracost/breakdown@v0.21.2
+        with:
+          api-key: '${{ secrets.infracost-api-key }}'
+          currency: '${{ inputs.currency }}'
+          version: '${{ inputs.version }}'
+          output-path: ${{ runner.temp }}/base.json
+          workspace-prefix: ${{ inputs.workspace-prefix }}
+          template: |
+            ${{ inputs.template }}
+      
+      - name: Checkout ${{ inputs.head-ref }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          ref: ${{ inputs.head-ref }}
+      - name: Breakdown ${{ inputs.head-ref }}
+        uses: cupel-co/actions/.github/actions/infracost/breakdown@v0.21.2
+        with:
+          api-key: '${{ secrets.infracost-api-key }}'
+          currency: '${{ inputs.currency }}'
+          version: '${{ inputs.version }}'
+          workspace-prefix: ${{ inputs.workspace-prefix }}
+          template: |
+            ${{ inputs.template }}
+          output-path: ${{ runner.temp }}/head.json
+
+      - name: Diff
+        uses: cupel-co/actions/.github/actions/infracost/diff@v0.21.2
+        with:
+          api-key: '${{ secrets.infracost-api-key }}'
+          currency: '${{ inputs.currency }}'
+          version: '${{ inputs.version }}'
+          base-breakdown-path: ${{ runner.temp }}/base.json
+          head-breakdown-path: ${{ runner.temp }}/head.json
+          output-path: ${{ runner.temp }}/diff.json
+
+      - name: Comment
+        uses: cupel-co/actions/.github/actions/infracost/comment@v0.21.2
+        with:
+          api-key: '${{ secrets.infracost-api-key }}'
+          currency: '${{ inputs.currency }}'
+          version: '${{ inputs.version }}'
+          behaviour: ${{ inputs.comment-behaviour }}
+          path: ${{ runner.temp }}/diff.json
+      

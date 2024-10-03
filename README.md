@@ -63,20 +63,18 @@ Tag, create a GitHub release and notify.
 | `tags` | The tag value | true     |         |
 
 #### Secrets
-| Name           | Description                                      | Required | Default |
-|----------------|--------------------------------------------------|----------|---------|
-| `gpg-key`      | The private GPG key used for signing the Git tag | true     |         |
-| `gpg-password` | The passphrase for the GPG private key           | true     |         |
-| `token`        | Token for github interaction                     | true     |         |
+| Name           | Description                                      | Required |
+|----------------|--------------------------------------------------|----------|
+| `gpg-key`      | The private GPG key used for signing the Git tag | true     |
+| `gpg-password` | The passphrase for the GPG private key           | true     |
+| `token`        | Token for github interaction                     | true     |
 
 #### Example
 ```yaml
 jobs:
   release:
     name: Release
-    uses: ./.github/workflows/release.yml
-    needs:
-      - generate
+    uses: cupel-co/workflows/.github/workflows/github-release.yml@vX.X.X
     permissions:
       contents: write
     with:
@@ -87,21 +85,94 @@ jobs:
       token: ${{ github.token }}
 ```
 
+### Infracost Comment
+Workflow: [infracost-comment.yml](.github/workflows/infracost-comment.yml)
+
+Add a comment to a PR for Infracost changes. The underlying actions include a default template to use. The name of the workspace is derived from the environment variables filename.
+
+#### Inputs
+| Name                | Description                                                             | Required | Default   |
+|---------------------|-------------------------------------------------------------------------|----------|-----------|
+| `base-ref`          | The name of the base ref, generally this is main, to checkout           | false    | `main`    |
+| `comment-behaviour` | The behaviour for the comment                                           | false    | `update`  |
+| `currency`          | The currency to show estimates in                                       | false    | `AUD`     |
+| `head-ref`          | The name of the head ref, generally this is feature branch, to checkout | true     |           |
+| `template`          | The infracost template                                                  | false    |           |
+| `version`           | The version of Infracost to install                                     | false    | `0.10.x`  |
+| `workspace-prefix`  | The prefix for the workspace name                                       | false    |           |
+
+#### Secrets
+| Name                | Description           | Required |
+|---------------------|-----------------------|----------|
+| `infracost-api-key` | The infracost API key | true     |
+
+#### Example
+##### Using template
+```yaml
+jobs:
+  cost:
+    name: Cost
+    uses: cupel-co/workflows/.github/workflows/infracost-comment.yml@vX.X.X
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      base-ref: main
+      head-ref: ${{ github.ref_name }}
+      comment-behaviour: update
+      currency: AUD
+      template: |
+        version: 0.1
+        projects:
+        {{- range `$project := matchPaths "infrastructure/variables/:env.tfvars" }}
+            - path: "./infrastructure"
+              name: "{{ `$project.env }}"
+              terraform_workspace: "${{ inputs.workspace-prefix }}{{ `$project.env }}"
+              terraform_var_files:
+                - "{{ relPath "./infrastructure" `$project._path }}"
+              dependency_paths:
+                - "**"
+                - "{{ relPath "./infrastructure" `$project._path }}"
+        {{- end }}
+      version: 0.10.x
+    secrets:
+      infracost-api-key: ${{ secrets.INFRACOST_API_KEY }}
+```
+##### Using workspace-prefix
+```yaml
+jobs:
+  cost:
+    name: Cost
+    uses: cupel-co/workflows/.github/workflows/infracost-comment.yml@vX.X.X
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      base-ref: main
+      head-ref: ${{ github.ref_name }}
+      comment-behaviour: update
+      currency: AUD
+      workspace-prefix: github-repositories-
+      version: 0.10.x
+    secrets:
+      infracost-api-key: ${{ secrets.INFRACOST_API_KEY }}
+```
+
 ### Notify Pull Request
 Workflow: [notify-pull-request.yml](.github/workflows/notify-pull-request.yml)
 
 Send a notification to the specified google chat
 
 #### Secrets
-| Name                      | Description                                 | Required | Default |
-|---------------------------|---------------------------------------------|----------|---------|
-| `google-chat-webhook-url` | The URL for sending messages to Google Chat | true     |         |
+| Name                      | Description                                 | Required |
+|---------------------------|---------------------------------------------|----------|
+| `google-chat-webhook-url` | The URL for sending messages to Google Chat | true     |
 
 #### Example
 ```yaml
 jobs:
-  generate:
-    name: Generate
+  notify:
+    name: Notify
     uses: cupel-co/workflows/.github/workflows/notify-pull-request.yml@vX.X.X
     with:
       google-chat-webhook-url: "${{ secrets.google-chat-webhook-url }}"
@@ -113,15 +184,15 @@ Workflow: [notify-release.yml](.github/workflows/notify-release.yml)
 Send a notification to the specified google chat
 
 #### Secrets
-| Name                      | Description                                 | Required | Default |
-|---------------------------|---------------------------------------------|----------|---------|
-| `google-chat-webhook-url` | The URL for sending messages to Google Chat | true     |         |
+| Name                      | Description                                 | Required |
+|---------------------------|---------------------------------------------|----------|
+| `google-chat-webhook-url` | The URL for sending messages to Google Chat | true     |
 
 #### Example
 ```yaml
 jobs:
-  generate:
-    name: Generate
+  notify:
+    name: Notify
     uses: cupel-co/workflows/.github/workflows/notify-release.yml@vX.X.X
     with:
       google-chat-webhook-url: "${{ secrets.google-chat-webhook-url }}"
@@ -143,9 +214,9 @@ Apply OpenTofu changes.
 | `version`       | The version of OpenTofu to install                                                            | false    | `1.8.1` |
 
 #### Secrets
-| Name         | Description                                                                                 | Required | Default |
-|--------------|---------------------------------------------------------------------------------------------|----------|---------|
-| `apply-args` | Additional arguments that contain secret values that need to be passed to the apply command | false    |         |
+| Name         | Description                                                                                 | Required |
+|--------------|---------------------------------------------------------------------------------------------|----------|
+| `apply-args` | Additional arguments that contain secret values that need to be passed to the apply command | false    |
 
 #### Example
 ```yaml
@@ -181,10 +252,10 @@ Destroy resources.
 | `workspace`           | The workspace to select or create during the apply process         | true     |                    |
 
 #### Secrets
-| Name           | Description                                              | Required | Default |
-|----------------|----------------------------------------------------------|----------|---------|
-| `destroy-args` | Additional arguments to pass to the tofu destroy command | false    |         |
-| `init-args`    | Additional arguments to pass to the tofu init command    | false    |         |
+| Name           | Description                                              | Required |
+|----------------|----------------------------------------------------------|----------|
+| `destroy-args` | Additional arguments to pass to the tofu destroy command | false    |
+| `init-args`    | Additional arguments to pass to the tofu init command    | false    |
 
 #### Example
 ```yaml
@@ -223,10 +294,10 @@ Generate an OpenTofu plan for specified resources.
 | `workspace`           | The workspace to select or create during the apply process         | true     |                    |
 
 #### Secrets
-| Name           | Description                                           | Required | Default |
-|----------------|-------------------------------------------------------|----------|---------|
-| `init-args`    | Additional arguments to pass to the tofu init command | false    |         |
-| `plan-args`    | Additional arguments to pass to the tofu plan command | false    |         |
+| Name           | Description                                           | Required |
+|----------------|-------------------------------------------------------|----------|
+| `init-args`    | Additional arguments to pass to the tofu init command | false    |
+| `plan-args`    | Additional arguments to pass to the tofu plan command | false    |
 
 #### Example
 ```yaml
@@ -268,12 +339,12 @@ Plan and apply OpenTofu changes
 | `workspace`           | The workspace to select or create during the apply process                                    | true     |                    |
 
 #### Secrets
-| Name                      | Description                                           | Required | Default |
-|---------------------------|-------------------------------------------------------|----------|---------|
-| `apply-args`              | Additional arguments to pass to the tofu init command | false    |         |
-| `google-chat-webhook-url` | The Webhook URL for the chat to send the message to   | false    |         |
-| `init-args`               | Additional arguments to pass to the tofu init command | false    |         |
-| `plan-args`               | Additional arguments to pass to the tofu plan command | false    |         |
+| Name                      | Description                                           | Required |
+|---------------------------|-------------------------------------------------------|----------|
+| `apply-args`              | Additional arguments to pass to the tofu init command | false    |
+| `google-chat-webhook-url` | The Webhook URL for the chat to send the message to   | false    |
+| `init-args`               | Additional arguments to pass to the tofu init command | false    |
+| `plan-args`               | Additional arguments to pass to the tofu plan command | false    |
 
 #### Example
 ```yaml

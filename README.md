@@ -408,7 +408,7 @@ Workflow: [update-pull-request.yml](.github/workflows/update-pull-request.yml)
 
 Update the PR description
 
-## Supported Values
+#### Supported Values
 | Name                      | Description                                                       |
 |---------------------------|-------------------------------------------------------------------|
 | `{{BRANCH_NAME}}`         | The name of the branch                                            |
@@ -419,17 +419,17 @@ Update the PR description
 | `{{PULL_REQUEST_TITLE}}`  | The pull request title                                            |
 | `{{REPOSITORY}}`          | The name of the repository. This includes the the owner name too. | 
 
-## Inputs
+#### Inputs
 | Name          | Description          | Required | Default Value |
 |---------------|----------------------|----------|---------------|
 | `environment` | The environment name | true     |               |
 
-## Secrets
+#### Secrets
 | Name           | Description                                            | Required |
 |----------------|--------------------------------------------------------|----------|
 | `github.token` | GitHube token. Needs `pull-requests: write` permission | true     |
 
-## Outputs
+#### Outputs
 | Name          | Description                                       |
 |---------------|---------------------------------------------------|
 | `description` | The pull request description with replaced values |

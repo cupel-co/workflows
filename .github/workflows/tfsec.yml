@@ -20,6 +20,6 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
       - name: Scan
-        uses: cupel-co/actions/.github/actions/tfsec@v0.21.2
+        uses: cupel-co/actions/.github/actions/tfsec@v0.22.0
         with:
           working-directory: '${{ inputs.working-directory }}'

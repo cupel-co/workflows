@@ -1,0 +1,18 @@
+﻿name: Update PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+concurrency:
+  cancel-in-progress: false
+  group: '${{ github.workflow }}-${{ github.ref_name }}'
+
+jobs:
+  update:
+    name: Update
+    uses: ./.github/workflows/update-pull-request.yml
+    secrets:
+      environment: Preview

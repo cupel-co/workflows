@@ -16,8 +16,6 @@ jobs:
   update:
     name: Update
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
     outputs:
       description: '${{ steps.update.outputs.description }}'
     steps:

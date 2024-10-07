@@ -402,3 +402,42 @@ jobs:
     name: Scan
     uses: cupel-co/workflows/.github/workflows/tfsec@vX.X.X
 ```
+
+### Update Pull Request
+Workflow: [update-pull-request.yml](.github/workflows/update-pull-request.yml)
+
+Update the PR description
+
+## Supported Values
+| Name                      | Description                                                       |
+|---------------------------|-------------------------------------------------------------------|
+| `{{BRANCH_NAME}}`         | The name of the branch                                            |
+| `{{ENVIRONMENT}}`         | The environment                                                   |
+| `{{ISSUE_NUMBER}}`        | The number of the issue                                           |
+| `{{ISSUE_TITLE}}`         | The title of the issue                                            |
+| `{{PULL_REQUEST_NUMBER}}` | The number of the pull request                                    |
+| `{{PULL_REQUEST_TITLE}}`  | The pull request title                                            |
+| `{{REPOSITORY}}`          | The name of the repository. This includes the the owner name too. | 
+
+## Inputs
+| Name          | Description          | Required | Default Value |
+|---------------|----------------------|----------|---------------|
+| `environment` | The environment name | true     |               |
+
+## Secrets
+| Name           | Description                                            | Required |
+|----------------|--------------------------------------------------------|----------|
+| `github.token` | GitHube token. Needs `pull-requests: write` permission | true     |
+
+## Outputs
+| Name          | Description                                       |
+|---------------|---------------------------------------------------|
+| `description` | The pull request description with replaced values |
+
+#### Example
+```yaml
+jobs:
+  update:
+    name: Update
+    uses: cupel-co/workflows/.github/workflows/update-pull-requests@vX.X.X
+```

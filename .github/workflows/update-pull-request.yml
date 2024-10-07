@@ -1,0 +1,28 @@
+﻿name: Update PR
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: The name of the artifact to upload after the plan step.
+        required: false
+        type: string
+    outputs:
+      major:
+        description: The Major value
+        value: '${{ jobs.update.outputs.description }}'
+
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    outputs:
+      description: '${{ steps.update.outputs.description }}'
+    steps:
+      - name: Update
+        id: update
+        uses: cupel-co/actions/.github/actions/pull-request/update@v0.22.0
+        with:
+          environment: ${{ inputs.environment }}

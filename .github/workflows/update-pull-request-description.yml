@@ -14,5 +14,5 @@ jobs:
   update:
     name: Update
     uses: ./.github/workflows/update-pull-request.yml
-    secrets:
+    with:
       environment: Preview

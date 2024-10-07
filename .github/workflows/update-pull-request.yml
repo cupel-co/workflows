@@ -16,13 +16,11 @@ jobs:
   update:
     name: Update
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
     outputs:
       description: '${{ steps.update.outputs.description }}'
     steps:
       - name: Update
         id: update
-        uses: cupel-co/actions/.github/actions/pull-request/update@v0.22.0
+        uses: cupel-co/actions/.github/actions/pull-request/update@v0.22.1
         with:
           environment: ${{ inputs.environment }}

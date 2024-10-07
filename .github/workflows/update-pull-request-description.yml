@@ -14,5 +14,7 @@ jobs:
   update:
     name: Update
     uses: ./.github/workflows/update-pull-request.yml
-    secrets:
+    permissions:
+      pull-requests: write
+    with:
       environment: Preview

@@ -20,6 +20,6 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
       - name: Scan
-        uses: cupel-co/actions/.github/actions/tflint@v0.22.1
+        uses: cupel-co/actions/.github/actions/tflint@v0.23.1
         with: 
           working-directory: '${{ inputs.working-directory }}'

@@ -21,6 +21,6 @@ jobs:
     steps:
       - name: Update
         id: update
-        uses: cupel-co/actions/.github/actions/pull-request/update@v0.22.1
+        uses: cupel-co/actions/.github/actions/pull-request/update@v0.23.1
         with:
           environment: ${{ inputs.environment }}

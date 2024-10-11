@@ -22,6 +22,14 @@ on:
         description: The name of the head ref, generally this is feature branch, to checkout
         required: true
         type: string
+      pull-request-number:
+        description: The PR number
+        required: true
+        type: number
+      repository:
+        description: The repository name
+        required: true
+        type: string
       template:
         description: The infracost template
         required: false
@@ -38,6 +46,9 @@ on:
     secrets:
       infracost-api-key:
         description: The infracost API key
+        required: true
+      token:
+        description: The GitHub token
         required: true
 
 jobs:
@@ -95,6 +106,8 @@ jobs:
           api-key: '${{ secrets.infracost-api-key }}'
           currency: '${{ inputs.currency }}'
           version: '${{ inputs.version }}'
-          behaviour: ${{ inputs.comment-behaviour }}
+          behaviour: '${{ inputs.comment-behaviour }}'
           path: ${{ runner.temp }}/diff.json
-      
+          pull-request-number: ${{ inputs.pull-request-number }}
+          repository: '${{ inputs.repository }}'
+          token: '${{ secrets.token }}'

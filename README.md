@@ -217,20 +217,23 @@ Workflow: [pull-request.infracost.yml](.github/workflows/pull-request.infracost.
 Add a comment to a PR for Infracost changes. The underlying actions include a default template to use. The name of the workspace is derived from the environment variables filename.
 
 ##### Inputs
-| Name                | Description                                                             | Required | Default   |
-|---------------------|-------------------------------------------------------------------------|----------|-----------|
-| `base-ref`          | The name of the base ref, generally this is main, to checkout           | false    | `main`    |
-| `comment-behaviour` | The behaviour for the comment                                           | false    | `update`  |
-| `currency`          | The currency to show estimates in                                       | false    | `AUD`     |
-| `head-ref`          | The name of the head ref, generally this is feature branch, to checkout | true     |           |
-| `template`          | The infracost template                                                  | false    |           |
-| `version`           | The version of Infracost to install                                     | false    | `0.10.x`  |
-| `workspace-prefix`  | The prefix for the workspace name                                       | false    |           |
+| Name                  | Description                                                             | Required | Default   |
+|-----------------------|-------------------------------------------------------------------------|----------|-----------|
+| `base-ref`            | The name of the base ref, generally this is main, to checkout           | false    | `main`    |
+| `comment-behaviour`   | The behaviour for the comment                                           | false    | `update`  |
+| `currency`            | The currency to show estimates in                                       | false    | `AUD`     |
+| `head-ref`            | The name of the head ref, generally this is feature branch, to checkout | true     |           |
+| `pull-request-number` | The PR number                                                           | true     |           |
+| `repository`          | The repository name                                                     | true     |           |
+| `template`            | The infracost template                                                  | false    |           |
+| `version`             | The version of Infracost to install                                     | false    | `0.10.x`  |
+| `workspace-prefix`    | The prefix for the workspace name                                       | false    |           |
 
 ##### Secrets
 | Name                | Description           | Required |
 |---------------------|-----------------------|----------|
 | `infracost-api-key` | The infracost API key | true     |
+| `token`             | The GitHub token      | true     |
 
 ##### Example
 ###### Using template

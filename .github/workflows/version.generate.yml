@@ -84,8 +84,8 @@ on:
         value: '${{ jobs.version.outputs.commit-date }}'
 
 jobs:
-  version:
-    name: Version
+  generate:
+    name: Generate
     runs-on: ubuntu-latest
     outputs:
       major: '${{ steps.generate.outputs.major }}'

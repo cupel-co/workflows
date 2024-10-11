@@ -445,8 +445,8 @@ Generate a version from the commit history.
 ##### Example
 ```yaml
 jobs:
-  generate:
-    name: Generate
+  version:
+    name: Version
     uses: cupel-co/workflows/.github/workflows/version.generate.yml@vX.X.X
 ```
 

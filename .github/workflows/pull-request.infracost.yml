@@ -12,12 +12,7 @@ on:
         description: The behaviour for the comment
         default: update
         required: false
-        type: choice
-        options:
-          - delete-and-new
-          - hide-and-new
-          - new
-          - update
+        type: string
       currency:
         description: The currency to use for the report
         default: AUD

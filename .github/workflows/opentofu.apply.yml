@@ -45,17 +45,17 @@ jobs:
           role-to-assume: '${{ inputs.oidc-role-arn }}'
           aws-region: '${{ inputs.region }}'
       - name: 'Download ${{ inputs.artifact-name }}'
-        uses: cupel-co/actions/.github/actions/artifact/download@v0.23.3
+        uses: cupel-co/actions/.github/actions/artifact/download@v0.23.4
         with:
           name: '${{ inputs.artifact-name }}'
           path: './'
       - name: Apply
-        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.23.3
+        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.23.4
         with:
           apply-args: '${{ inputs.apply-args }} ${{ secrets.apply-args }}'
           version: '${{ inputs.version }}'
       - name: 'Delete ${{ inputs.artifact-name }}'
         if: always()
-        uses: cupel-co/actions/.github/actions/artifact/delete@v0.23.3
+        uses: cupel-co/actions/.github/actions/artifact/delete@v0.23.4
         with:
           name: '${{ inputs.artifact-name }}'

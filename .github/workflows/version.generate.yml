@@ -8,80 +8,79 @@ on:
         required: false
         default: GITHUB_FLOW
         type: string
-
     outputs:
       major:
         description: The Major value
-        value: '${{ jobs.version.outputs.major }}'
+        value: '${{ jobs.generate.outputs.major }}'
       minor:
         description: The Minor value
-        value: '${{ jobs.version.outputs.minor }}'
+        value: '${{ jobs.generate.outputs.minor }}'
       patch:
         description: The Patch value
-        value: '${{ jobs.version.outputs.patch }}'
+        value: '${{ jobs.generate.outputs.patch }}'
       pre-release-tag:
         description: The prerelease tag value
-        value: '${{ jobs.version.outputs.pre-release-tag }}'
+        value: '${{ jobs.generate.outputs.pre-release-tag }}'
       pre-release-tag-with-dash:
         description: The prerelease tag with dash value
-        value: '${{ jobs.version.outputs.pre-release-tag-with-dash }}'
+        value: '${{ jobs.generate.outputs.pre-release-tag-with-dash }}'
       pre-release-label:
         description: The prerelease lable value
-        value: '${{ jobs.version.outputs.pre-release-label }}'
+        value: '${{ jobs.generate.outputs.pre-release-label }}'
       pre-release-number:
         description: The prerelease number value
-        value: '${{ jobs.version.outputs.pre-release-number }}'
+        value: '${{ jobs.generate.outputs.pre-release-number }}'
       weighted-pre-release-number:
         description: The weighted prerelease number value
-        value: '${{ jobs.version.outputs.weighted-pre-release-number }}'
+        value: '${{ jobs.generate.outputs.weighted-pre-release-number }}'
       build-meta-data:
         description: The build metadata value
-        value: '${{ jobs.version.outputs.build-meta-data }}'
+        value: '${{ jobs.generate.outputs.build-meta-data }}'
       full-build-meta-data:
         description: The full build metadata value
-        value: '${{ jobs.version.outputs.full-build-meta-data }}'
+        value: '${{ jobs.generate.outputs.full-build-meta-data }}'
       major-minor-patch:
         description: The major minor patch value
-        value: '${{ jobs.version.outputs.major-minor-patch }}'
+        value: '${{ jobs.generate.outputs.major-minor-patch }}'
       sem-ver:
         description: The semantic version value
-        value: '${{ jobs.version.outputs.sem-ver }}'
+        value: '${{ jobs.generate.outputs.sem-ver }}'
       assembly-sem-ver:
         description: The assembly semantic version value
-        value: '${{ jobs.version.outputs.assembly-sem-ver }}'
+        value: '${{ jobs.generate.outputs.assembly-sem-ver }}'
       assembly-sem-file-ver:
         description: The file assembly semantic version value
-        value: '${{ jobs.version.outputs.assembly-sem-file-ver }}'
+        value: '${{ jobs.generate.outputs.assembly-sem-file-ver }}'
       full-sem-ver:
         description: The full semantic version value
-        value: '${{ jobs.version.outputs.full-sem-ver }}'
+        value: '${{ jobs.generate.outputs.full-sem-ver }}'
       informational-version:
         description: The informational version value
-        value: '${{ jobs.version.outputs.informational-version }}'
+        value: '${{ jobs.generate.outputs.informational-version }}'
       branch-name:
         description: The branch name value
-        value: '${{ jobs.version.outputs.branch-nam }}'
+        value: '${{ jobs.generate.outputs.branch-nam }}'
       escaped-branch-name:
         description: The escaped branch name value
-        value: '${{ jobs.version.outputs.escaped-branch-name }}'
+        value: '${{ jobs.generate.outputs.escaped-branch-name }}'
       sha:
         description: The sha value
-        value: '${{ jobs.version.outputs.sha }}'
+        value: '${{ jobs.generate.outputs.sha }}'
       short-sha:
         description: The short sha value
-        value: '${{ jobs.version.outputs.short-sha }}'
+        value: '${{ jobs.generate.outputs.short-sha }}'
       version-source-sha:
         description: The version source sha value
-        value: '${{ jobs.version.outputs.version-source-sha }}'
+        value: '${{ jobs.generate.outputs.version-source-sha }}'
       commits-since-version-source:
         description: The commits since version source value
-        value: '${{ jobs.version.outputs.commits-since-version-source }}'
+        value: '${{ jobs.generate.outputs.commits-since-version-source }}'
       uncommitted-changes:
         description: The uncommitted changes value
-        value: '${{ jobs.version.outputs.uncommitted-changes }}'
+        value: '${{ jobs.generate.outputs.uncommitted-changes }}'
       commit-date:
         description: The commit date value
-        value: '${{ jobs.version.outputs.commit-date }}'
+        value: '${{ jobs.generate.outputs.commit-date }}'
 
 jobs:
   generate:

@@ -10,19 +10,19 @@ concurrency:
   group: '${{ github.workflow }}-${{ github.ref_name }}'
 
 jobs:
-  generate:
-    name: Generate
+  version:
+    name: Version
     uses: ./.github/workflows/version.generate.yml
 
   release:
     name: Release
     uses: ./.github/workflows/release.github.yml
     needs:
-      - generate
+      - version
     permissions:
       contents: write
     with:
-      tag: 'v${{ needs.generate.outputs.sem-ver }}'
+      tag: 'v${{ needs.version.outputs.sem-ver }}'
     secrets:
       google-chat-webhook-url: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
       gpg-key: '${{ secrets.GH_GPG_PRIVATE_KEY }}'

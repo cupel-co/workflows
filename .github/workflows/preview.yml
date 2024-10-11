@@ -12,6 +12,6 @@ concurrency:
   group: '${{ github.workflow }}-${{ github.ref_name }}'
 
 jobs:
-  generate:
-    name: Generate
+  version:
+    name: Version
     uses: ./.github/workflows/version.generate.yml

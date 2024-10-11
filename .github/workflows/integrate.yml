@@ -12,11 +12,11 @@ concurrency:
 jobs:
   generate:
     name: Generate
-    uses: ./.github/workflows/generate-version.yml
+    uses: ./.github/workflows/version.generate.yml
 
   release:
     name: Release
-    uses: ./.github/workflows/github-release.yml
+    uses: ./.github/workflows/release.github.yml
     needs:
       - generate
     permissions:

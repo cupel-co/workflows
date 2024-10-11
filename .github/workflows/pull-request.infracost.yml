@@ -42,7 +42,7 @@ on:
 
 jobs:
   cost:
-    name: cost
+    name: Cost
     runs-on: ubuntu-latest
     steps:
       - name: Checkout ${{ inputs.base-ref }}
@@ -52,7 +52,7 @@ jobs:
           fetch-tags: true
           ref: ${{ inputs.base-ref }}
       - name: Breakdown ${{ inputs.base-ref }}
-        uses: cupel-co/actions/.github/actions/infracost/breakdown@v0.23.1
+        uses: cupel-co/actions/.github/actions/infracost/breakdown@v0.23.3
         with:
           api-key: '${{ secrets.infracost-api-key }}'
           currency: '${{ inputs.currency }}'
@@ -69,7 +69,7 @@ jobs:
           fetch-tags: true
           ref: ${{ inputs.head-ref }}
       - name: Breakdown ${{ inputs.head-ref }}
-        uses: cupel-co/actions/.github/actions/infracost/breakdown@v0.23.1
+        uses: cupel-co/actions/.github/actions/infracost/breakdown@v0.23.3
         with:
           api-key: '${{ secrets.infracost-api-key }}'
           currency: '${{ inputs.currency }}'
@@ -80,7 +80,7 @@ jobs:
           output-path: ${{ runner.temp }}/head.json
 
       - name: Diff
-        uses: cupel-co/actions/.github/actions/infracost/diff@v0.23.1
+        uses: cupel-co/actions/.github/actions/infracost/diff@v0.23.3
         with:
           api-key: '${{ secrets.infracost-api-key }}'
           currency: '${{ inputs.currency }}'
@@ -90,7 +90,7 @@ jobs:
           output-path: ${{ runner.temp }}/diff.json
 
       - name: Comment
-        uses: cupel-co/actions/.github/actions/infracost/comment@v0.23.1
+        uses: cupel-co/actions/.github/actions/infracost/comment@v0.23.3
         with:
           api-key: '${{ secrets.infracost-api-key }}'
           currency: '${{ inputs.currency }}'

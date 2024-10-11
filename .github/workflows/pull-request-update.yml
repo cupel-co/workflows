@@ -11,10 +11,12 @@ concurrency:
   group: '${{ github.workflow }}-${{ github.ref_name }}'
 
 jobs:
-  update:
-    name: Update
-    uses: ./.github/workflows/update-pull-request.yml
+  pull-request:
+    name: Pull Request
+    uses: ./.github/workflows/pull-request.update.yml
     permissions:
+      issues: read
       pull-requests: write
+      repository-projects: read
     with:
       environment: Preview

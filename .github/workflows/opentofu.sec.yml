@@ -1,4 +1,4 @@
-name: TF Lint
+name: OpenTofu Security Static Analysis
 
 on:
   workflow_call:
@@ -10,8 +10,8 @@ on:
         type: string
 
 jobs:
-  lint:
-    name: Lint
+  security:
+    name: Security
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,6 +20,6 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
       - name: Scan
-        uses: cupel-co/actions/.github/actions/tflint@v0.23.1
-        with: 
+        uses: cupel-co/actions/.github/actions/tfsec@v0.23.1
+        with:
           working-directory: '${{ inputs.working-directory }}'

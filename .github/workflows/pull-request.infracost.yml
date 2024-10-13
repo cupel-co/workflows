@@ -101,7 +101,7 @@ jobs:
           output-path: ${{ runner.temp }}/diff.json
 
       - name: Comment
-        uses: cupel-co/actions/.github/actions/infracost/comment@v0.236
+        uses: cupel-co/actions/.github/actions/infracost/comment@v0.23.6
         with:
           api-key: '${{ secrets.infracost-api-key }}'
           currency: '${{ inputs.currency }}'

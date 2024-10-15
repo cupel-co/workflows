@@ -13,6 +13,11 @@ on:
         default: update
         required: false
         type: string
+      comment-identifier:
+        description: A unique identifier to for the comment added by this implementation
+        default: infracost
+        required: false
+        type: string
       currency:
         description: The currency to use for the report
         default: AUD
@@ -37,6 +42,11 @@ on:
       version:
         description: The version of Infracost to install
         default: 0.10.x
+        required: false
+        type: string
+      usage:
+        description: The usage file
+        default: ''
         required: false
         type: string
       workspace-prefix:
@@ -72,6 +82,8 @@ jobs:
           workspace-prefix: ${{ inputs.workspace-prefix }}
           template: |
             ${{ inputs.template }}
+          usage: |
+            ${{ inputs.usage }}
       
       - name: Checkout ${{ inputs.head-ref }}
         uses: actions/checkout@v4
@@ -85,10 +97,12 @@ jobs:
           api-key: '${{ secrets.infracost-api-key }}'
           currency: '${{ inputs.currency }}'
           version: '${{ inputs.version }}'
+          output-path: ${{ runner.temp }}/head.json
           workspace-prefix: ${{ inputs.workspace-prefix }}
           template: |
             ${{ inputs.template }}
-          output-path: ${{ runner.temp }}/head.json
+          usage: |
+            ${{ inputs.usage }}
 
       - name: Diff
         uses: cupel-co/actions/.github/actions/infracost/diff@v0.24.0
@@ -104,6 +118,7 @@ jobs:
         uses: cupel-co/actions/.github/actions/infracost/comment@v0.24.0
         with:
           api-key: '${{ secrets.infracost-api-key }}'
+          comment-identifier: ${{ inputs.comment-identifier }}
           currency: '${{ inputs.currency }}'
           version: '${{ inputs.version }}'
           behaviour: '${{ inputs.comment-behaviour }}'

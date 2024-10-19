@@ -120,7 +120,7 @@ jobs:
           fetch-tags: true
       - name: Generate
         id: generate
-        uses: cupel-co/actions/.github/actions/version/generate@v0.24.1
+        uses: cupel-co/actions/.github/actions/version/generate@v0.24.2
         with: 
           flow-type: '${{ inputs.flow-type }}'
         

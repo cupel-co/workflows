@@ -73,7 +73,7 @@ Add a comment to a PR for Infracost changes. The underlying actions include a de
 jobs:
   cost:
     name: Cost
-    uses: cupel-co/workflows/.github/workflows/pull-request.infracost.yml@vX.X.X
+    uses: cupel-co/workflows/.github/workflows/opentofu.cost.yml@vX.X.X
     permissions:
       contents: read
       pull-requests: write
@@ -106,7 +106,7 @@ jobs:
 jobs:
   cost:
     name: Cost
-    uses: cupel-co/workflows/.github/workflows/pull-request.infracost.yml@vX.X.X
+    uses: cupel-co/workflows/.github/workflows/opentofu.cost.yml@vX.X.X
     permissions:
       contents: read
       pull-requests: write
@@ -381,7 +381,7 @@ Tag, create a GitHub release and notify.
 jobs:
   release:
     name: Release
-    uses: cupel-co/workflows/.github/workflows/release.github.yml@vX.X.X
+    uses: cupel-co/workflows/.github/workflows/release.create.yml@vX.X.X
     permissions:
       contents: write
     with:

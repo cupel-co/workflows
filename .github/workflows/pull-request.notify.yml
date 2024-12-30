@@ -1,4 +1,4 @@
-name: Notify PR
+name: Pull Request Notify
 
 on:
   workflow_call:

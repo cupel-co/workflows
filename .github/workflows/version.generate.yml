@@ -1,4 +1,4 @@
-name: Generate Version
+name: Version Generate
 
 on:
   workflow_call:

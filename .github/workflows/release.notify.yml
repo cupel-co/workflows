@@ -1,4 +1,4 @@
-name: Notify Release
+name: Release Notify
 
 on:
   workflow_call:

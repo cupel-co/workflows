@@ -1,4 +1,4 @@
-name: OpenTofu Security Static Analysis
+name: OpenTofu Sec
 
 on:
   workflow_call:

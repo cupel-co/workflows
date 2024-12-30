@@ -41,6 +41,88 @@ jobs:
       apply-args: '-var="github_pat=${{ secrets.GH_PAT }}"'
 ```
 
+#### Cost
+Workflow: [opentofu.cost.yml](.github/workflows/opentofu.cost.yml)
+
+Add a comment to a PR for Infracost changes. The underlying actions include a default template to use. The name of the workspace is derived from the environment variables filename.
+
+##### Inputs
+| Name                  | Description                                                             | Required | Default   |
+|-----------------------|-------------------------------------------------------------------------|----------|-----------|
+| `base-ref`            | The name of the base ref, generally this is main, to checkout           | false    | `main`    |
+| `comment-behaviour`   | The behaviour for the comment                                           | false    | `update`  |
+| `comment-identifier`  | A unique identifier to for the comment added by this implementation     | false    | `comment` |
+| `currency`            | The currency to show estimates in                                       | false    | `AUD`     |
+| `head-ref`            | The name of the head ref, generally this is feature branch, to checkout | true     |           |
+| `pull-request-number` | The PR number                                                           | true     |           |
+| `repository`          | The repository name                                                     | true     |           |
+| `template`            | The infracost template                                                  | false    |           |
+| `usage`               | The usage file contents                                                 | false    |           |
+| `version`             | The version of Infracost to install                                     | false    | `0.10.x`  |
+| `workspace-prefix`    | The prefix for the workspace name                                       | false    |           |
+
+##### Secrets
+| Name                | Description           | Required |
+|---------------------|-----------------------|----------|
+| `infracost-api-key` | The infracost API key | true     |
+| `token`             | The GitHub token      | true     |
+
+##### Example
+###### Using template
+```yaml
+jobs:
+  cost:
+    name: Cost
+    uses: cupel-co/workflows/.github/workflows/pull-request.infracost.yml@vX.X.X
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      base-ref: main
+      head-ref: ${{ github.ref_name }}
+      comment-behaviour: update
+      currency: AUD
+      template: |
+        version: 0.1
+        projects:
+        {{- range `$project := matchPaths "infrastructure/variables/:env.tfvars" }}
+            - path: "./infrastructure"
+              name: "{{ `$project.env }}"
+              terraform_workspace: "${{ inputs.workspace-prefix }}{{ `$project.env }}"
+              terraform_var_files:
+                - "{{ relPath "./infrastructure" `$project._path }}"
+              dependency_paths:
+                - "**"
+                - "{{ relPath "./infrastructure" `$project._path }}"
+        {{- end }}
+      usage: 
+        
+      version: 0.10.x
+    secrets:
+      infracost-api-key: ${{ secrets.INFRACOST_API_KEY }}
+```
+###### Using workspace-prefix
+```yaml
+jobs:
+  cost:
+    name: Cost
+    uses: cupel-co/workflows/.github/workflows/pull-request.infracost.yml@vX.X.X
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      base-ref: main
+      head-ref: ${{ github.ref_name }}
+      comment-behaviour: update
+      currency: AUD
+      workspace-prefix: github-repositories-
+      usage:
+
+      version: 0.10.x
+    secrets:
+      infracost-api-key: ${{ secrets.INFRACOST_API_KEY }}
+```
+
 #### Destroy
 Workflow: [opentofu.destroy.yml](.github/workflows/opentofu.destroy.yml)
 
@@ -211,88 +293,6 @@ jobs:
 ```
 
 ### Pull Request
-#### Infracost
-Workflow: [pull-request.infracost.yml](.github/workflows/pull-request.infracost.yml)
-
-Add a comment to a PR for Infracost changes. The underlying actions include a default template to use. The name of the workspace is derived from the environment variables filename.
-
-##### Inputs
-| Name                  | Description                                                             | Required | Default   |
-|-----------------------|-------------------------------------------------------------------------|----------|-----------|
-| `base-ref`            | The name of the base ref, generally this is main, to checkout           | false    | `main`    |
-| `comment-behaviour`   | The behaviour for the comment                                           | false    | `update`  |
-| `comment-identifier`  | A unique identifier to for the comment added by this implementation     | false    | `comment` |
-| `currency`            | The currency to show estimates in                                       | false    | `AUD`     |
-| `head-ref`            | The name of the head ref, generally this is feature branch, to checkout | true     |           |
-| `pull-request-number` | The PR number                                                           | true     |           |
-| `repository`          | The repository name                                                     | true     |           |
-| `template`            | The infracost template                                                  | false    |           |
-| `usage`               | The usage file contents                                                 | false    |           |
-| `version`             | The version of Infracost to install                                     | false    | `0.10.x`  |
-| `workspace-prefix`    | The prefix for the workspace name                                       | false    |           |
-
-##### Secrets
-| Name                | Description           | Required |
-|---------------------|-----------------------|----------|
-| `infracost-api-key` | The infracost API key | true     |
-| `token`             | The GitHub token      | true     |
-
-##### Example
-###### Using template
-```yaml
-jobs:
-  cost:
-    name: Cost
-    uses: cupel-co/workflows/.github/workflows/pull-request.infracost.yml@vX.X.X
-    permissions:
-      contents: read
-      pull-requests: write
-    with:
-      base-ref: main
-      head-ref: ${{ github.ref_name }}
-      comment-behaviour: update
-      currency: AUD
-      template: |
-        version: 0.1
-        projects:
-        {{- range `$project := matchPaths "infrastructure/variables/:env.tfvars" }}
-            - path: "./infrastructure"
-              name: "{{ `$project.env }}"
-              terraform_workspace: "${{ inputs.workspace-prefix }}{{ `$project.env }}"
-              terraform_var_files:
-                - "{{ relPath "./infrastructure" `$project._path }}"
-              dependency_paths:
-                - "**"
-                - "{{ relPath "./infrastructure" `$project._path }}"
-        {{- end }}
-      usage: 
-        
-      version: 0.10.x
-    secrets:
-      infracost-api-key: ${{ secrets.INFRACOST_API_KEY }}
-```
-###### Using workspace-prefix
-```yaml
-jobs:
-  cost:
-    name: Cost
-    uses: cupel-co/workflows/.github/workflows/pull-request.infracost.yml@vX.X.X
-    permissions:
-      contents: read
-      pull-requests: write
-    with:
-      base-ref: main
-      head-ref: ${{ github.ref_name }}
-      comment-behaviour: update
-      currency: AUD
-      workspace-prefix: github-repositories-
-      usage:
-
-      version: 0.10.x
-    secrets:
-      infracost-api-key: ${{ secrets.INFRACOST_API_KEY }}
-```
-
 #### Notify
 Workflow: [pull-request.notify.yml](.github/workflows/pull-request.notify.yml)
 
@@ -359,8 +359,8 @@ jobs:
 ```
 
 ### Release
-#### GitHub
-Workflow: [release.github.yml](.github/workflows/release.github.yml)
+#### Create
+Workflow: [release.create.yml](.github/workflows/release.create.yml)
 
 Tag, create a GitHub release and notify.
 

@@ -1,4 +1,4 @@
-name: Plan
+name: OpenTofu Plan
 
 on:
   workflow_call:

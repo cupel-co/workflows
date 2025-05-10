@@ -24,7 +24,7 @@ on:
         required: false
         type: string
       infracost-template:
-        description: The infracost template
+        description: The infracost template. Provide a path to a custom Infracost template file or leave empty to use the default template.
         required: false
         type: string
       infracost-usage:

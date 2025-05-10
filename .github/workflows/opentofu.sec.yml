@@ -1,4 +1,4 @@
-name: OpenTofu Sec
+name: OpenTofu Security
 
 on:
   workflow_call:
@@ -20,6 +20,6 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
       - name: Scan
-        uses: cupel-co/actions/.github/actions/tfsec@v0.24.3
+        uses: cupel-co/actions/.github/actions/opentofu/sec@v0.25.0
         with:
           working-directory: '${{ inputs.working-directory }}'

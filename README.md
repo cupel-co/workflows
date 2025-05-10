@@ -47,19 +47,21 @@ Workflow: [opentofu.cost.yml](.github/workflows/opentofu.cost.yml)
 Add a comment to a PR for Infracost changes. The underlying actions include a default template to use. The name of the workspace is derived from the environment variables filename.
 
 ##### Inputs
-| Name                  | Description                                                             | Required | Default   |
-|-----------------------|-------------------------------------------------------------------------|----------|-----------|
-| `base-ref`            | The name of the base ref, generally this is main, to checkout           | false    | `main`    |
-| `comment-behaviour`   | The behaviour for the comment                                           | false    | `update`  |
-| `comment-identifier`  | A unique identifier to for the comment added by this implementation     | false    | `comment` |
-| `currency`            | The currency to show estimates in                                       | false    | `AUD`     |
-| `head-ref`            | The name of the head ref, generally this is feature branch, to checkout | true     |           |
-| `pull-request-number` | The PR number                                                           | true     |           |
-| `repository`          | The repository name                                                     | true     |           |
-| `template`            | The infracost template                                                  | false    |           |
-| `usage`               | The usage file contents                                                 | false    |           |
-| `version`             | The version of Infracost to install                                     | false    | `0.10.x`  |
-| `workspace-prefix`    | The prefix for the workspace name                                       | false    |           |
+| Name                           | Description                                                             | Required | Default            |
+|--------------------------------|-------------------------------------------------------------------------|----------|--------------------|
+| `base-ref`                     | The name of the base ref, generally this is main, to checkout           | false    | `main`             |
+| `infracost-comment-behaviour`  | The behaviour for the comment                                           | false    | `update`           |
+| `infracost-comment-identifier` | A unique identifier to for the comment added by this implementation     | false    | `comment`          |
+| `infracost-currency`           | The currency to show estimates in                                       | false    | `AUD`              |
+| `infracost-template`           | The infracost template                                                  | false    |                    |
+| `infracost-usage`              | The usage file contents                                                 | false    |                    |
+| `infracost-version`            | The version of Infracost to install                                     | false    | `0.10.x`           |
+| `infracost-workspace-prefix`   | The prefix for the workspace name                                       | false    |                    |
+| `head-ref`                     | The name of the head ref, generally this is feature branch, to checkout | true     |                    |
+| `opentofu-version`             | The version of Opentofu to install                                      | false    | `1.8.1`            |
+| `pull-request-number`          | The PR number                                                           | true     |                    |
+| `repository`                   | The repository name                                                     | true     |                    |
+| `working-directory`            | The directory where the infrastructure code is located.                 | false    | `./infrastructure` |
 
 ##### Secrets
 | Name                | Description           | Required |

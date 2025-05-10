@@ -8,24 +8,47 @@ on:
         default: main
         required: false
         type: string
-      comment-behaviour:
+      infracost-comment-behaviour:
         description: The behaviour for the comment
         default: update
         required: false
         type: string
-      comment-identifier:
+      infracost-comment-identifier:
         description: A unique identifier to for the comment added by this implementation
         default: comment
         required: false
         type: string
-      currency:
+      infracost-currency:
         description: The currency to use for the report
         default: AUD
+        required: false
+        type: string
+      infracost-template:
+        description: The infracost template
+        required: false
+        type: string
+      infracost-usage:
+        description: The usage file
+        default: ''
+        required: false
+        type: string
+      infracost-version:
+        description: The version of Infracost to install
+        default: 0.10.x
+        required: false
+        type: string
+      infracost-workspace-prefix:
+        description: The prefix for the workspace name
         required: false
         type: string
       head-ref:
         description: The name of the head ref, generally this is feature branch, to checkout
         required: true
+        type: string
+      opentofu-version:
+        description: The version of OpenTofu to install
+        default: 1.8.1
+        required: false
         type: string
       pull-request-number:
         description: The PR number
@@ -35,22 +58,9 @@ on:
         description: The repository name
         required: true
         type: string
-      template:
-        description: The infracost template
-        required: false
-        type: string
-      version:
-        description: The version of Infracost to install
-        default: 0.10.x
-        required: false
-        type: string
-      usage:
-        description: The usage file
-        default: ''
-        required: false
-        type: string
-      workspace-prefix:
-        description: The prefix for the workspace name
+      working-directory:
+        description: The directory where the infrastructure code is located.
+        default: ./infrastructure
         required: false
         type: string
     secrets:
@@ -72,18 +82,24 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           ref: ${{ inputs.base-ref }}
+      - name: Restore OpenTofu Modules
+        uses: cupel-co/actions/.github/actions/opentofu/get@v0.34.0
+        with:
+          version: '${{ inputs.opentofu-version }}'
+          working-directory: ${{ inputs.working-directory }}
       - name: Breakdown ${{ inputs.base-ref }}
-        uses: cupel-co/actions/.github/actions/infracost/breakdown@v0.24.3
+        uses: cupel-co/actions/.github/actions/opentofu/cost/breakdown@v0.25.0
         with:
           api-key: '${{ secrets.infracost-api-key }}'
-          currency: '${{ inputs.currency }}'
-          version: '${{ inputs.version }}'
+          currency: '${{ inputs.infracost-currency }}'
           output-path: ${{ runner.temp }}/base.json
-          workspace-prefix: ${{ inputs.workspace-prefix }}
           template: |
-            ${{ inputs.template }}
+            ${{ inputs.infracost-template }}
           usage: |
-            ${{ inputs.usage }}
+            ${{ inputs.infracost-usage }}
+          version: '${{ inputs.infracost-version }}'
+          workspace-prefix: ${{ inputs.infracost-workspace-prefix }}
+          working-directory: ${{ inputs.working-directory }}
       
       - name: Checkout ${{ inputs.head-ref }}
         uses: actions/checkout@v4
@@ -91,38 +107,46 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
           ref: ${{ inputs.head-ref }}
+      - name: Restore OpenTofu Modules
+        uses: cupel-co/actions/.github/actions/opentofu/get@v0.34.0
+        with:
+          version: '${{ inputs.opentofu-version }}'
+          working-directory: ${{ inputs.working-directory }}
       - name: Breakdown ${{ inputs.head-ref }}
-        uses: cupel-co/actions/.github/actions/infracost/breakdown@v0.24.3
+        uses: cupel-co/actions/.github/actions/opentofu/cost/breakdown@v0.25.0
         with:
           api-key: '${{ secrets.infracost-api-key }}'
-          currency: '${{ inputs.currency }}'
-          version: '${{ inputs.version }}'
+          currency: '${{ inputs.infracost-currency }}'
           output-path: ${{ runner.temp }}/head.json
-          workspace-prefix: ${{ inputs.workspace-prefix }}
           template: |
-            ${{ inputs.template }}
+            ${{ inputs.infracost-template }}
           usage: |
-            ${{ inputs.usage }}
+            ${{ inputs.infracost-usage }}
+          version: '${{ inputs.infracost-version }}'
+          workspace-prefix: ${{ inputs.infracost-workspace-prefix }}
+          working-directory: ${{ inputs.working-directory }}
 
       - name: Diff
-        uses: cupel-co/actions/.github/actions/infracost/diff@v0.24.3
+        uses: cupel-co/actions/.github/actions/opentofu/cost/diff@v0.25.0
         with:
           api-key: '${{ secrets.infracost-api-key }}'
-          currency: '${{ inputs.currency }}'
-          version: '${{ inputs.version }}'
           base-breakdown-path: ${{ runner.temp }}/base.json
+          currency: '${{ inputs.infracost-currency }}'
           head-breakdown-path: ${{ runner.temp }}/head.json
           output-path: ${{ runner.temp }}/diff.json
+          version: '${{ inputs.infracost-version }}'
+          working-directory: ${{ inputs.working-directory }}
 
       - name: Comment
-        uses: cupel-co/actions/.github/actions/infracost/comment@v0.24.3
+        uses: cupel-co/actions/.github/actions/opentofu/cost/comment@v0.25.0
         with:
           api-key: '${{ secrets.infracost-api-key }}'
-          comment-identifier: ${{ inputs.comment-identifier }}
-          currency: '${{ inputs.currency }}'
-          version: '${{ inputs.version }}'
-          behaviour: '${{ inputs.comment-behaviour }}'
+          behaviour: '${{ inputs.infracost-comment-behaviour }}'
+          comment-identifier: ${{ inputs.infracost-comment-identifier }}
+          currency: '${{ inputs.infracost-currency }}'
           path: ${{ runner.temp }}/diff.json
           pull-request-number: ${{ inputs.pull-request-number }}
           repository: '${{ inputs.repository }}'
           token: '${{ secrets.token }}'
+          version: '${{ inputs.infracost-version }}'
+          working-directory: ${{ inputs.working-directory }}

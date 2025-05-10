@@ -16,7 +16,7 @@ on:
         required: true
         type: string
       region:
-        description: The AWS region to use for the apply operation.
+        description: The AWS region for the oidc-role-arn credential.
         required: true
         type: string
       use-primary-backend:
@@ -63,7 +63,7 @@ jobs:
           role-to-assume: '${{ inputs.oidc-role-arn }}'
           aws-region: '${{ inputs.region }}'
       - name: Destroy
-        uses: cupel-co/actions/.github/actions/opentofu/destroy@v0.24.3
+        uses: cupel-co/actions/.github/actions/opentofu/destroy@v0.25.0
         with:
           destroy-args: '${{ inputs.destroy-args }} ${{ secrets.destroy-args }}'
           init-args: '${{ inputs.init-args }} ${{ secrets.init-args }}'

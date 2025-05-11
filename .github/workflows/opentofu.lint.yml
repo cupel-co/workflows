@@ -20,6 +20,6 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
       - name: Scan
-        uses: cupel-co/actions/.github/actions/opentofu/lint@v0.25.1
+        uses: cupel-co/actions/.github/actions/opentofu/lint@v0.25.2
         with:
           working-directory: '${{ inputs.working-directory }}'

@@ -80,7 +80,7 @@ jobs:
           role-to-assume: '${{ inputs.oidc-role-arn }}'
           aws-region: '${{ inputs.region }}'
       - name: Plan
-        uses: cupel-co/actions/.github/actions/opentofu/plan@v0.25.1
+        uses: cupel-co/actions/.github/actions/opentofu/plan@v0.25.2
         with:
           init-args: '${{ inputs.init-args }} ${{ secrets.init-args }}'
           plan-args: '${{ inputs.plan-args }} ${{ secrets.plan-args }}'
@@ -89,7 +89,7 @@ jobs:
           working-directory: '${{ inputs.working-directory }}'
           workspace: '${{ inputs.workspace }}'
       - name: 'Upload ${{ inputs.artifact-name }}'
-        uses: cupel-co/actions/.github/actions/artifact/upload@v0.25.1
+        uses: cupel-co/actions/.github/actions/artifact/upload@v0.25.2
         with:
           name: '${{ inputs.artifact-name }}'
           path: '${{ inputs.working-directory }}'
@@ -107,17 +107,17 @@ jobs:
           role-to-assume: '${{ inputs.oidc-role-arn }}'
           aws-region: '${{ inputs.region }}'
       - name: 'Download ${{ inputs.artifact-name }}'
-        uses: cupel-co/actions/.github/actions/artifact/download@v0.25.1
+        uses: cupel-co/actions/.github/actions/artifact/download@v0.25.2
         with:
           name: '${{ inputs.artifact-name }}'
           path: './'
       - name: 'Delete ${{ inputs.artifact-name }}'
         if: always()
-        uses: cupel-co/actions/.github/actions/artifact/delete@v0.25.1
+        uses: cupel-co/actions/.github/actions/artifact/delete@v0.25.2
         with:
           name: '${{ inputs.artifact-name }}'
       - name: Apply
-        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.25.1
+        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.25.2
         with:
           apply-args: '${{ inputs.apply-args }} ${{ secrets.apply-args }}'
           version: '${{ inputs.version }}'
@@ -128,7 +128,7 @@ jobs:
       - apply
     steps:
       - name: Apply
-        uses: cupel-co/actions/.github/actions/deployed/notify@v0.25.1
+        uses: cupel-co/actions/.github/actions/deployed/notify@v0.25.2
         with:
           environment: '${{ inputs.environment }}'
           google-chat-webhook-url: '${{ secrets.google-chat-webhook-url }}'

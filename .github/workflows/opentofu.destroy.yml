@@ -63,7 +63,7 @@ jobs:
           role-to-assume: '${{ inputs.oidc-role-arn }}'
           aws-region: '${{ inputs.region }}'
       - name: Destroy
-        uses: cupel-co/actions/.github/actions/opentofu/destroy@v0.27.0
+        uses: cupel-co/actions/.github/actions/opentofu/destroy@v0.26.0
         with:
           destroy-args: '${{ inputs.opentofu-destroy-args }} ${{ secrets.opentofu-destroy-args }}'
           init-args: '${{ inputs.opentofu-init-args }} ${{ secrets.opentofu-init-args }}'

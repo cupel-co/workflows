@@ -11,11 +11,17 @@ on:
       google-chat-webhook-url:
         description: The Webhook URL for the chat to send the message to
         required: true
-      gpg-key:
-        description: The private GPG key used for signing the Git tag.
+      ssh-private-key:
+        description: The private SSH key used for signing the Git tag.
         required: true
-      gpg-password:
-        description: The passphrase for the GPG private key.
+      ssh-public-key:
+        description: The public SSH key used for signing the Git tag.
+        required: true
+      user-email:
+        description: The email address the SSH signing key is registered to
+        required: true
+      user-name:
+        description: The name the SSH signing key is registered to
         required: true
       token:
         description: Token for github interaction
@@ -33,11 +39,13 @@ jobs:
           fetch-tags: true
           token: '${{ secrets.token }}'
       - name: Tag
-        uses: cupel-co/actions/.github/actions/release/tag@v0.27.0
+        uses: cupel-co/actions/.github/actions/release/tag@v0.26.0
         with:
-          gpg-key: '${{ secrets.gpg-key }}'
-          gpg-password: '${{ secrets.gpg-password }}'
+          ssh-private-key: '${{ secrets.ssh-private-key }}'
+          ssh-public-key: '${{ secrets.ssh-public-key }}'
           tag: '${{ inputs.tag }}'
+          user-email: '${{ secrets.user-email }}'
+          user-name: '${{ secrets.user-name }}'
 
   github:
     name: GitHub
@@ -52,7 +60,7 @@ jobs:
           fetch-tags: true
           token: '${{ secrets.token }}'
       - name: Release
-        uses: cupel-co/actions/.github/actions/release/create@v0.27.0
+        uses: cupel-co/actions/.github/actions/release/create@v0.26.0
         with:
           tag: '${{ inputs.tag }}'
           token: '${{ secrets.token }}'
@@ -64,7 +72,7 @@ jobs:
       - github
     steps:
       - name: Release
-        uses: cupel-co/actions/.github/actions/release/notify@v0.27.0
+        uses: cupel-co/actions/.github/actions/release/notify@v0.26.0
         with:
           google-chat-webhook-url: '${{ secrets.google-chat-webhook-url }}'
           tag: '${{ inputs.tag }}'

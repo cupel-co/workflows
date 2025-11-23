@@ -372,11 +372,13 @@ Tag, create a GitHub release and notify.
 | `tag` | The tag value | true     |         |
 
 ##### Secrets
-| Name           | Description                                      | Required |
-|----------------|--------------------------------------------------|----------|
-| `gpg-key`      | The private GPG key used for signing the Git tag | true     |
-| `gpg-password` | The passphrase for the GPG private key           | true     |
-| `token`        | Token for github interaction                     | true     |
+| Name              | Description                                            | Required |
+|-------------------|--------------------------------------------------------|----------|
+| `ssh-private-key` | The private SSH key used for signing the Git tag       | true     |
+| `ssh-public-key`  | The public SSH key used for signing the Git tag        | true     |
+| `token`           | Token for github interaction                           | true     |
+| `user-email`      | Email of the user the SSH signing key is registered to | true     |
+| `user-name`       | Name of the user the SSH signing key is registered to  | true     |
 
 ##### Example
 ```yaml
@@ -389,9 +391,11 @@ jobs:
     with:
       tag: "v0.0.1"
     secrets:
-      gpg-key: ${{ secrets.GH_GPG_PRIVATE_KEY }}
-      gpg-password: ${{ secrets.GH_GPG_PRIVATE_KEY_PASSWORD }}
+      ssh-private-key: ${{ secrets.GH_SIGNING_SSH_PRIVATE_KEY }}
+      ssh-public-key: ${{ secrets.GH_SIGNING_SSH_PUBLIC_KEY }}
       token: ${{ github.token }}
+      user-email: ${{ secrets.GH_SIGNING_SSH_USER_EMAIL }}
+      user-name: ${{ secrets.GH_SIGNING_SSH_USER_NAME }}
 ```
 
 #### Notify

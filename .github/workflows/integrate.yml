@@ -25,6 +25,8 @@ jobs:
       tag: 'v${{ needs.version.outputs.sem-ver }}'
     secrets:
       google-chat-webhook-url: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
-      gpg-key: '${{ secrets.GH_GPG_PRIVATE_KEY }}'
-      gpg-password: '${{ secrets.GH_GPG_PRIVATE_KEY_PASSWORD }}'
+      ssh-private-key: '${{ secrets.GH_SIGNING_SSH_PRIVATE_KEY }}'
+      ssh-public-key: '${{ secrets.GH_SIGNING_SSH_PUBLIC_KEY }}'
       token: '${{ secrets.GH_RELEASE_PAT }}'
+      user-email: '${{ secrets.GH_SIGNING_SSH_USER_EMAIL }}'
+      user-name: '${{ secrets.GH_SIGNING_SSH_USER_NAME }}'

@@ -3,10 +3,6 @@ name: OpenTofu Plan and Apply
 on:
   workflow_call:
     inputs:
-      apply-args:
-        description: Additional arguments to pass to the tofu apply command.
-        required: false
-        type: string
       artifact-name:
         description: The name of the artifact to upload after the plan step.
         required: true
@@ -15,52 +11,56 @@ on:
         description: The target environment where the apply operation will be executed (e.g., staging, production).
         required: true
         type: string
-      init-args:
-        description: Additional arguments to pass to the tofu init command.
-        required: false
-        type: string
       oidc-role-arn:
         description: The ARN of the OIDC role to assume for AWS credentials.
         required: true
         type: string
-      plan-args:
+      opentofu-apply-args:
+        description: Additional arguments to pass to the tofu apply command.
+        required: false
+        type: string
+      opentofu-init-args:
+        description: Additional arguments to pass to the tofu init command.
+        required: false
+        type: string
+      opentofu-plan-args:
         description: Additional arguments to pass to the tofu plan command.
         required: false
         type: string
-      region:
-        description: The AWS region for the oidc-role-arn credential.
-        required: true
-        type: string
-      use-primary-backend:
+      opentofu-use-primary-backend:
         description: Specifies whether to use the primary backend during initialization.
         default: 'true'
         required: false
         type: string
-      version:
+      opentofu-version:
         description: The version of OpenTofu to install.
         default: 1.8.1
         required: false
+        type: string
+      opentofu-workspace:
+        description: The workspace to select or create during the plan process.
+        required: true
+        type: string
+      region:
+        description: The AWS region for the oidc-role-arn credential.
+        required: true
         type: string
       working-directory:
         description: The directory where the infrastructure code is located.
         default: ./infrastructure
         required: false
         type: string
-      workspace:
-        description: The workspace to select or create during the plan process.
-        required: true
-        type: string
     secrets:
-      apply-args:
-        description: Additional arguments that contain secret values that need to be passed to the apply command.
-        required: false
       google-chat-webhook-url:
         description: The Webhook URL for the chat to send the message to
         required: false
-      init-args:
+      opentofu-apply-args:
+        description: Additional arguments that contain secret values that need to be passed to the apply command.
+        required: false
+      opentofu-init-args:
         description: Additional arguments to pass to the tofu init command.
         required: false
-      plan-args:
+      opentofu-plan-args:
         description: Additional arguments to pass to the tofu plan command.
         required: false
 
@@ -80,16 +80,16 @@ jobs:
           role-to-assume: '${{ inputs.oidc-role-arn }}'
           aws-region: '${{ inputs.region }}'
       - name: Plan
-        uses: cupel-co/actions/.github/actions/opentofu/plan@v0.25.2
+        uses: cupel-co/actions/.github/actions/opentofu/plan@v0.27.0
         with:
-          init-args: '${{ inputs.init-args }} ${{ secrets.init-args }}'
-          plan-args: '${{ inputs.plan-args }} ${{ secrets.plan-args }}'
-          use-primary-backend: '${{ inputs.use-primary-backend }}'
-          version: '${{ inputs.version }}'
+          init-args: '${{ inputs.opentofu-init-args }} ${{ secrets.opentofu-init-args }}'
+          plan-args: '${{ inputs.opentofu-plan-args }} ${{ secrets.opentofu-plan-args }}'
+          use-primary-backend: '${{ inputs.opentofu-use-primary-backend }}'
+          version: '${{ inputs.opentofu-version }}'
           working-directory: '${{ inputs.working-directory }}'
-          workspace: '${{ inputs.workspace }}'
+          workspace: '${{ inputs.opentofu-workspace }}'
       - name: 'Upload ${{ inputs.artifact-name }}'
-        uses: cupel-co/actions/.github/actions/artifact/upload@v0.25.2
+        uses: cupel-co/actions/.github/actions/artifact/upload@v0.27.0
         with:
           name: '${{ inputs.artifact-name }}'
           path: '${{ inputs.working-directory }}'
@@ -107,20 +107,20 @@ jobs:
           role-to-assume: '${{ inputs.oidc-role-arn }}'
           aws-region: '${{ inputs.region }}'
       - name: 'Download ${{ inputs.artifact-name }}'
-        uses: cupel-co/actions/.github/actions/artifact/download@v0.25.2
+        uses: cupel-co/actions/.github/actions/artifact/download@v0.27.0
         with:
           name: '${{ inputs.artifact-name }}'
           path: './'
       - name: 'Delete ${{ inputs.artifact-name }}'
         if: always()
-        uses: cupel-co/actions/.github/actions/artifact/delete@v0.25.2
+        uses: cupel-co/actions/.github/actions/artifact/delete@v0.27.0
         with:
           name: '${{ inputs.artifact-name }}'
       - name: Apply
-        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.25.2
+        uses: cupel-co/actions/.github/actions/opentofu/apply@v0.27.0
         with:
-          apply-args: '${{ inputs.apply-args }} ${{ secrets.apply-args }}'
-          version: '${{ inputs.version }}'
+          apply-args: '${{ inputs.opentofu-apply-args }} ${{ secrets.opentofu-apply-args }}'
+          version: '${{ inputs.opentofu-version }}'
   notify:
     name: Notify
     runs-on: ubuntu-latest
@@ -128,8 +128,8 @@ jobs:
       - apply
     steps:
       - name: Apply
-        uses: cupel-co/actions/.github/actions/deployed/notify@v0.25.2
+        uses: cupel-co/actions/.github/actions/deployed/notify@v0.27.0
         with:
           environment: '${{ inputs.environment }}'
           google-chat-webhook-url: '${{ secrets.google-chat-webhook-url }}'
-          subtitle: 'Workspace: ${{ inputs.workspace }}'
+          subtitle: 'Workspace: ${{ inputs.opentofu-workspace }}'

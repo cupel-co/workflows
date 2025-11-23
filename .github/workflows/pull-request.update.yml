@@ -5,7 +5,7 @@ on:
     inputs:
       environment:
         description: The name of the artifact to upload after the plan step.
-        required: false
+        required: true
         type: string
     outputs:
       major:
@@ -21,6 +21,6 @@ jobs:
     steps:
       - name: Update
         id: update
-        uses: cupel-co/actions/.github/actions/pull-request/update@v0.25.2
+        uses: cupel-co/actions/.github/actions/pull-request/update@v0.27.0
         with:
           environment: ${{ inputs.environment }}

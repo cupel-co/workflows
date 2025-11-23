@@ -3,46 +3,46 @@ name: OpenTofu Destroy
 on:
   workflow_call:
     inputs:
-      destroy-args:
+      oidc-role-arn:
+        description: The ARN of the OIDC role to assume for AWS credentials.
+        required: true
+        type: string
+      opentofu-destroy-args:
         description: Additional arguments to pass to the tofu destroy command.
         required: false
         type: string
-      init-args:
+      opentofu-init-args:
         description: Additional arguments to pass to the tofu init command.
         required: false
         type: string
-      oidc-role-arn:
-        description: The ARN of the OIDC role to assume for AWS credentials.
+      opentofu-use-primary-backend:
+        description: Specifies whether to use the primary backend during initialization.
+        default: 'true'
+        required: false
+        type: string
+      opentofu-version:
+        description: The version of OpenTofu to install.
+        default: 1.8.1
+        required: false
+        type: string
+      opentofu-workspace:
+        description: The workspace to select or create during the apply process.
         required: true
         type: string
       region:
         description: The AWS region for the oidc-role-arn credential.
         required: true
         type: string
-      use-primary-backend:
-        description: Specifies whether to use the primary backend during initialization.
-        default: 'true'
-        required: false
-        type: string
-      version:
-        description: The version of OpenTofu to install.
-        default: 1.8.1
-        required: false
-        type: string
       working-directory:
         description: The directory where the infrastructure code is located.
         default: ./infrastructure
         required: false
         type: string
-      workspace:
-        description: The workspace to select or create during the apply process.
-        required: true
-        type: string
     secrets:
-      destroy-args:
+      opentofu-destroy-args:
         description: Additional arguments to pass to the tofu destroy command.
         required: false
-      init-args:
+      opentofu-init-args:
         description: Additional arguments to pass to the tofu init command.
         required: false
 
@@ -63,11 +63,11 @@ jobs:
           role-to-assume: '${{ inputs.oidc-role-arn }}'
           aws-region: '${{ inputs.region }}'
       - name: Destroy
-        uses: cupel-co/actions/.github/actions/opentofu/destroy@v0.25.2
+        uses: cupel-co/actions/.github/actions/opentofu/destroy@v0.27.0
         with:
-          destroy-args: '${{ inputs.destroy-args }} ${{ secrets.destroy-args }}'
-          init-args: '${{ inputs.init-args }} ${{ secrets.init-args }}'
-          use-primary-backend: '${{ inputs.use-primary-backend }}'
-          version: '${{ inputs.version }}'
+          destroy-args: '${{ inputs.opentofu-destroy-args }} ${{ secrets.opentofu-destroy-args }}'
+          init-args: '${{ inputs.opentofu-init-args }} ${{ secrets.opentofu-init-args }}'
+          use-primary-backend: '${{ inputs.opentofu-use-primary-backend }}'
+          version: '${{ inputs.opentofu-version }}'
           working-directory: '${{ inputs.working-directory }}'
-          workspace: '${{ inputs.workspace }}'
+          workspace: '${{ inputs.opentofu-workspace }}'

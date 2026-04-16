@@ -294,6 +294,115 @@ jobs:
     uses: cupel-co/workflows/.github/workflows/opentofu.sec.yml@vX.X.X
 ```
 
+### Terrakube
+#### Apply
+Workflow: [terrakube.apply.yml](.github/workflows/terrakube.apply.yml)
+
+Apply OpenTofu changes using Terrakube as the cloud backend.
+
+##### Inputs
+| Name                  | Description                                                                                   | Required | Default                                |
+|-----------------------|-----------------------------------------------------------------------------------------------|----------|----------------------------------------|
+| `environment`         | The target environment where the apply operation will be executed (e.g., staging, production) | true     |                                        |
+| `opentofu-apply-args` | Additional arguments to pass to the tofu apply command                                        | false    |                                        |
+| `opentofu-init-args`  | Additional arguments to pass to the tofu init command                                         | false    |                                        |
+| `opentofu-version`    | The version of OpenTofu to install                                                            | false    | `1.11.6`                               |
+| `terrakube-hostname`  | The hostname of your Terrakube instance                                                       | false    | `https://terrakube-api.cicd.cupel.co`  |
+| `working-directory`   | The directory where the infrastructure code is located                                        | false    | `./infrastructure`                     |
+
+##### Secrets
+| Name                  | Description                                                                                 | Required |
+|-----------------------|---------------------------------------------------------------------------------------------|----------|
+| `opentofu-apply-args` | Additional arguments that contain secret values that need to be passed to the apply command | false    |
+| `opentofu-init-args`  | Additional arguments to pass to the tofu init command                                       | false    |
+| `terrakube-token`     | The API token for authenticating with Terrakube                                             | true     |
+
+##### Example
+```yaml
+jobs:
+  apply:
+    name: Apply
+    uses: cupel-co/workflows/.github/workflows/terrakube.apply.yml@vX.X.X
+    with:
+      environment: Production
+      opentofu-apply-args: '-var-file="variables/production.tfvars"'
+      opentofu-init-args: '-var-file="variables/production.tfvars"'
+    secrets:
+      terrakube-token: ${{ secrets.TERRAKUBE_TOKEN }}
+```
+
+#### Destroy
+Workflow: [terrakube.destroy.yml](.github/workflows/terrakube.destroy.yml)
+
+Destroy OpenTofu-managed resources using Terrakube as the cloud backend.
+
+##### Inputs
+| Name                    | Description                                                                                     | Required | Default                                |
+|-------------------------|-------------------------------------------------------------------------------------------------|----------|----------------------------------------|
+| `environment`           | The target environment where the destroy operation will be executed (e.g., staging, production) | true     |                                        |
+| `opentofu-destroy-args` | Additional arguments to pass to the tofu destroy command                                         | false    |                                        |
+| `opentofu-init-args`    | Additional arguments to pass to the tofu init command                                            | false    |                                        |
+| `opentofu-version`      | The version of OpenTofu to install                                                               | false    | `1.11.6`                               |
+| `terrakube-hostname`    | The hostname of your Terrakube instance                                                          | false    | `https://terrakube-api.cicd.cupel.co`  |
+| `working-directory`     | The directory where the infrastructure code is located                                           | false    | `./infrastructure`                     |
+
+##### Secrets
+| Name                    | Description                                              | Required |
+|-------------------------|----------------------------------------------------------|----------|
+| `opentofu-destroy-args` | Additional arguments to pass to the tofu destroy command | false    |
+| `opentofu-init-args`    | Additional arguments to pass to the tofu init command    | false    |
+| `terrakube-token`       | The API token for authenticating with Terrakube          | true     |
+
+##### Example
+```yaml
+jobs:
+  destroy:
+    name: Destroy
+    uses: cupel-co/workflows/.github/workflows/terrakube.destroy.yml@vX.X.X
+    with:
+      environment: Production
+      opentofu-destroy-args: '-var-file="variables/production.tfvars"'
+      opentofu-init-args: '-var-file="variables/production.tfvars"'
+    secrets:
+      terrakube-token: ${{ secrets.TERRAKUBE_TOKEN }}
+```
+
+#### Plan
+Workflow: [terrakube.plan.yml](.github/workflows/terrakube.plan.yml)
+
+Generate an OpenTofu plan using Terrakube as the cloud backend.
+
+##### Inputs
+| Name                 | Description                                            | Required | Default                                |
+|----------------------|--------------------------------------------------------|----------|----------------------------------------|
+| `artifact-name`      | The name of the artifact to upload after the plan step | false    |                                        |
+| `opentofu-init-args` | Additional arguments to pass to the tofu init command  | false    |                                        |
+| `opentofu-plan-args` | Additional arguments to pass to the tofu plan command  | false    |                                        |
+| `opentofu-version`   | The version of OpenTofu to install                     | false    | `1.11.6`                               |
+| `terrakube-hostname` | The hostname of your Terrakube instance                | false    | `https://terrakube-api.cicd.cupel.co`  |
+| `working-directory`  | The directory where the infrastructure code is located | false    | `./infrastructure`                     |
+
+##### Secrets
+| Name                 | Description                                           | Required |
+|----------------------|-------------------------------------------------------|----------|
+| `opentofu-init-args` | Additional arguments to pass to the tofu init command | false    |
+| `opentofu-plan-args` | Additional arguments to pass to the tofu plan command | false    |
+| `terrakube-token`    | The API token for authenticating with Terrakube       | true     |
+
+##### Example
+```yaml
+jobs:
+  plan:
+    name: Plan
+    uses: cupel-co/workflows/.github/workflows/terrakube.plan.yml@vX.X.X
+    with:
+      artifact-name: cicd-production
+      opentofu-init-args: '-var-file="variables/production.tfvars"'
+      opentofu-plan-args: '-var-file="variables/production.tfvars"'
+    secrets:
+      terrakube-token: ${{ secrets.TERRAKUBE_TOKEN }}
+```
+
 ### Pull Request
 #### Notify
 Workflow: [pull-request.notify.yml](.github/workflows/pull-request.notify.yml)

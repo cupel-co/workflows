@@ -1,0 +1,64 @@
+name: Terrakube Apply
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: The target environment where the apply operation will be executed (e.g., staging, production).
+        required: true
+        type: string
+      opentofu-apply-args:
+        description: Additional arguments to pass to the tofu apply command.
+        required: false
+        type: string
+      opentofu-init-args:
+        description: Additional arguments to pass to the tofu init command.
+        required: false
+        type: string
+      opentofu-version:
+        description: The version of OpenTofu to install.
+        default: 1.11.6
+        required: false
+        type: string
+      terrakube-hostname:
+        description: The hostname of your Terrakube instance.
+        default: https://terrakube-api.cicd.cupel.co
+        required: false
+        type: string
+      working-directory:
+        description: The directory where the infrastructure code is located.
+        default: ./infrastructure
+        required: false
+        type: string
+    secrets:
+      opentofu-apply-args:
+        description: Additional arguments that contain secret values that need to be passed to the apply command.
+        required: false
+      opentofu-init-args:
+        description: Additional arguments to pass to the tofu init command.
+        required: false
+      terrakube-token:
+        description: The API token for authenticating with Terrakube.
+        required: true
+
+jobs:
+  apply:
+    name: Apply
+    runs-on: ubuntu-latest
+    environment: '${{ inputs.environment }}'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Apply
+        uses: cupel-co/actions/.github/actions/terrakube/apply@v0.28.1
+        with:
+          apply-args: '${{ inputs.opentofu-apply-args }} ${{ secrets.opentofu-apply-args }}'
+          init-args: '${{ inputs.opentofu-init-args }} ${{ secrets.opentofu-init-args }}'
+          terrakube-hostname: '${{ inputs.terrakube-hostname }}'
+          terrakube-token: '${{ secrets.terrakube-token }}'
+          version: '${{ inputs.opentofu-version }}'
+          working-directory: '${{ inputs.working-directory }}'
+

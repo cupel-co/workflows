@@ -1,0 +1,70 @@
+name: Terrakube Plan
+
+on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: The name of the artifact to upload after the plan step.
+        required: false
+        type: string
+      opentofu-init-args:
+        description: Additional arguments to pass to the tofu init command.
+        required: false
+        type: string
+      opentofu-plan-args:
+        description: Additional arguments to pass to the tofu plan command.
+        required: false
+        type: string
+      opentofu-version:
+        description: The version of OpenTofu to install.
+        default: 1.11.6
+        required: false
+        type: string
+      terrakube-hostname:
+        description: The hostname of your Terrakube instance.
+        default: https://terrakube-api.cicd.cupel.co
+        required: false
+        type: string
+      working-directory:
+        description: The directory where the infrastructure code is located.
+        default: ./infrastructure
+        required: false
+        type: string
+    secrets:
+      opentofu-init-args:
+        description: Additional arguments to pass to the tofu init command.
+        required: false
+      opentofu-plan-args:
+        description: Additional arguments to pass to the tofu plan command.
+        required: false
+      terrakube-token:
+        description: The API token for authenticating with Terrakube.
+        required: true
+
+jobs:
+  plan:
+    name: Plan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Plan
+        uses: cupel-co/actions/.github/actions/terrakube/plan@v0.28.1
+        with:
+          init-args: '${{ inputs.opentofu-init-args }} ${{ secrets.opentofu-init-args }}'
+          plan-args: '${{ inputs.opentofu-plan-args }} ${{ secrets.opentofu-plan-args }}'
+          terrakube-hostname: '${{ inputs.terrakube-hostname }}'
+          terrakube-token: '${{ secrets.terrakube-token }}'
+          version: '${{ inputs.opentofu-version }}'
+          working-directory: '${{ inputs.working-directory }}'
+      - name: 'Upload ${{ inputs.artifact-name }}'
+        if: ${{ inputs.artifact-name != '' }}
+        uses: cupel-co/actions/.github/actions/artifact/upload@v0.28.1
+        with:
+          name: '${{ inputs.artifact-name }}'
+          path: '${{ inputs.working-directory }}'
+          retention-days: 1
+

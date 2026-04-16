@@ -22,7 +22,7 @@ on:
         type: string
       terrakube-hostname:
         description: The hostname of your Terrakube instance.
-        default: https://terrakube-api.cicd.cupel.co
+        default: terrakube-api.cicd.cupel.co
         required: false
         type: string
       working-directory:
@@ -53,7 +53,7 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
       - name: Apply
-        uses: cupel-co/actions/.github/actions/terrakube/apply@v0.28.1
+        uses: cupel-co/actions/.github/actions/terrakube/apply@v0.28.2
         with:
           apply-args: '${{ inputs.apply-args }} ${{ secrets.apply-args }}'
           init-args: '${{ inputs.init-args }} ${{ secrets.init-args }}'

@@ -9,16 +9,16 @@ on:
         type: string
     secrets:
       google-chat-webhook-url:
-        description: The Webhook URL for the chat to send the message to
+        description: The webhook URL used to send release notifications to Google Chat
         required: true
       gpg-private-key:
-        description: The private SSH key used for signing the Git tag.
+        description: The armored GPG private key used to sign the Git tag.
         required: true
       gpg-private-key-password:
-        description: The password for the private SSH key used for signing the Git tag.
+        description: The password for the GPG private key used to sign the Git tag.
         required: true
       token:
-        description: Token for github interaction
+        description: A GitHub token with permission to push tags and create releases
         required: true
 
 jobs:

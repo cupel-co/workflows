@@ -25,7 +25,7 @@ on:
         description: The prerelease tag with dash value
         value: '${{ jobs.generate.outputs.pre-release-tag-with-dash }}'
       pre-release-label:
-        description: The prerelease lable value
+        description: The prerelease label value
         value: '${{ jobs.generate.outputs.pre-release-label }}'
       pre-release-number:
         description: The prerelease number value
@@ -59,7 +59,7 @@ on:
         value: '${{ jobs.generate.outputs.informational-version }}'
       branch-name:
         description: The branch name value
-        value: '${{ jobs.generate.outputs.branch-nam }}'
+        value: '${{ jobs.generate.outputs.branch-name }}'
       escaped-branch-name:
         description: The escaped branch name value
         value: '${{ jobs.generate.outputs.escaped-branch-name }}'

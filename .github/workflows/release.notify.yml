@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs: 
       tag:
-        description: The URL for sending messages to Google Chat
+        description: The release tag to include in the notification
         required: true
         type: string
     secrets:

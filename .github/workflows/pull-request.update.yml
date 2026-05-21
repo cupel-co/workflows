@@ -4,12 +4,12 @@ on:
   workflow_call:
     inputs:
       environment:
-        description: The name of the artifact to upload after the plan step.
+        description: The environment name to inject into the pull request description.
         required: true
         type: string
     outputs:
-      major:
-        description: The Major value
+      description:
+        description: The rendered pull request description.
         value: '${{ jobs.update.outputs.description }}'
 
 jobs:

@@ -9,22 +9,16 @@ on:
         type: string
     secrets:
       google-chat-webhook-url:
-        description: The Webhook URL for the chat to send the message to
+        description: The webhook URL used to send release notifications to Google Chat
         required: true
-      ssh-private-key:
-        description: The private SSH key used for signing the Git tag.
+      gpg-private-key:
+        description: The armored GPG private key used to sign the Git tag.
         required: true
-      ssh-public-key:
-        description: The public SSH key used for signing the Git tag.
-        required: true
-      user-email:
-        description: The email address the SSH signing key is registered to
-        required: true
-      user-name:
-        description: The name the SSH signing key is registered to
+      gpg-private-key-password:
+        description: The password for the GPG private key used to sign the Git tag.
         required: true
       token:
-        description: Token for github interaction
+        description: A GitHub token with permission to push tags and create releases
         required: true
 
 jobs:
@@ -33,19 +27,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
           fetch-tags: true
           token: '${{ secrets.token }}'
       - name: Tag
-        uses: cupel-co/actions/.github/actions/release/tag@v0.26.0
+        uses: cupel-co/actions/.github/actions/release/tag@f0995465d50036e76ec0d4d7886f33818b710c49
         with:
-          ssh-private-key: '${{ secrets.ssh-private-key }}'
-          ssh-public-key: '${{ secrets.ssh-public-key }}'
+          gpg-key: '${{ secrets.gpg-private-key }}'
+          gpg-password: '${{ secrets.gpg-private-key-password }}'
           tag: '${{ inputs.tag }}'
-          user-email: '${{ secrets.user-email }}'
-          user-name: '${{ secrets.user-name }}'
 
   github:
     name: GitHub
@@ -54,13 +46,13 @@ jobs:
       - tag
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
           fetch-tags: true
           token: '${{ secrets.token }}'
       - name: Release
-        uses: cupel-co/actions/.github/actions/release/create@v0.26.0
+        uses: cupel-co/actions/.github/actions/release/create@f0995465d50036e76ec0d4d7886f33818b710c49
         with:
           tag: '${{ inputs.tag }}'
           token: '${{ secrets.token }}'
@@ -72,7 +64,7 @@ jobs:
       - github
     steps:
       - name: Release
-        uses: cupel-co/actions/.github/actions/release/notify@v0.26.0
+        uses: cupel-co/actions/.github/actions/release/notify@f0995465d50036e76ec0d4d7886f33818b710c49
         with:
           google-chat-webhook-url: '${{ secrets.google-chat-webhook-url }}'
           tag: '${{ inputs.tag }}'

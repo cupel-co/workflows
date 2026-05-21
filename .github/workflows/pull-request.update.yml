@@ -4,12 +4,12 @@ on:
   workflow_call:
     inputs:
       environment:
-        description: The name of the artifact to upload after the plan step.
+        description: The environment name to inject into the pull request description.
         required: true
         type: string
     outputs:
-      major:
-        description: The Major value
+      description:
+        description: The rendered pull request description.
         value: '${{ jobs.update.outputs.description }}'
 
 jobs:
@@ -21,6 +21,6 @@ jobs:
     steps:
       - name: Update
         id: update
-        uses: cupel-co/actions/.github/actions/pull-request/update@v0.26.0
+        uses: cupel-co/actions/.github/actions/pull-request/update@f0995465d50036e76ec0d4d7886f33818b710c49
         with:
           environment: ${{ inputs.environment }}

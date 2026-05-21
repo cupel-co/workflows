@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs: 
       tag:
-        description: The URL for sending messages to Google Chat
+        description: The release tag to include in the notification
         required: true
         type: string
     secrets:
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Google Chat
-        uses: cupel-co/actions/.github/actions/release/notify@v0.26.0
+        uses: cupel-co/actions/.github/actions/release/notify@f0995465d50036e76ec0d4d7886f33818b710c49
         with: 
           google-chat-webhook-url: '${{ secrets.google-chat-webhook-url }}'
           tag: '${{ inputs.tag }}'

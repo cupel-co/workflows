@@ -33,7 +33,7 @@ jobs:
           fetch-tags: true
           token: '${{ secrets.token }}'
       - name: Tag
-        uses: cupel-co/actions/.github/actions/release/tag@d6ada7c3046e8a1509a6c333da8e950a6354e427
+        uses: cupel-co/actions/.github/actions/release/tag@052b8f5004d1e4d35ae0e5d0fd263f05d173b62c
         with:
           gpg-key: '${{ secrets.gpg-private-key }}'
           gpg-password: '${{ secrets.gpg-private-key-password }}'
@@ -52,7 +52,7 @@ jobs:
           fetch-tags: true
           token: '${{ secrets.token }}'
       - name: Release
-        uses: cupel-co/actions/.github/actions/release/create@d6ada7c3046e8a1509a6c333da8e950a6354e427
+        uses: cupel-co/actions/.github/actions/release/create@052b8f5004d1e4d35ae0e5d0fd263f05d173b62c
         with:
           tag: '${{ inputs.tag }}'
           token: '${{ secrets.token }}'
@@ -64,7 +64,7 @@ jobs:
       - github
     steps:
       - name: Release
-        uses: cupel-co/actions/.github/actions/release/notify@d6ada7c3046e8a1509a6c333da8e950a6354e427
+        uses: cupel-co/actions/.github/actions/release/notify@052b8f5004d1e4d35ae0e5d0fd263f05d173b62c
         with:
           google-chat-webhook-url: '${{ secrets.google-chat-webhook-url }}'
           tag: '${{ inputs.tag }}'

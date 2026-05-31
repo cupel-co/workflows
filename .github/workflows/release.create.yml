@@ -33,7 +33,7 @@ jobs:
           fetch-tags: true
           token: '${{ secrets.token }}'
       - name: Tag
-        uses: cupel-co/actions/.github/actions/release/tag@052b8f5004d1e4d35ae0e5d0fd263f05d173b62c
+        uses: cupel-co/actions/.github/actions/release/tag@890cd45dab0f39bc1a680ba03cbe63d08a6d3756
         with:
           gpg-key: '${{ secrets.gpg-private-key }}'
           gpg-password: '${{ secrets.gpg-private-key-password }}'

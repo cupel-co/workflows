@@ -2,7 +2,7 @@ name: Preview
 
 on:
   pull_request:
-    types: 
+    types:
       - opened
       - reopened
       - synchronize
@@ -15,3 +15,5 @@ jobs:
   version:
     name: Version
     uses: ./.github/workflows/version.generate.yml
+    permissions:
+      contents: read

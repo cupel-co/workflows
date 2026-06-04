@@ -27,13 +27,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0
           fetch-tags: true
           token: '${{ secrets.token }}'
       - name: Tag
-        uses: cupel-co/actions/.github/actions/release/tag@052b8f5004d1e4d35ae0e5d0fd263f05d173b62c
+        uses: cupel-co/actions/.github/actions/release/tag@890cd45dab0f39bc1a680ba03cbe63d08a6d3756
         with:
           gpg-key: '${{ secrets.gpg-private-key }}'
           gpg-password: '${{ secrets.gpg-private-key-password }}'
@@ -46,7 +46,7 @@ jobs:
       - tag
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0
           fetch-tags: true

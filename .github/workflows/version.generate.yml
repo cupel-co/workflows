@@ -114,13 +114,13 @@ jobs:
       
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           fetch-depth: 0
           fetch-tags: true
       - name: Generate
         id: generate
-        uses: cupel-co/actions/.github/actions/version/generate@890cd45dab0f39bc1a680ba03cbe63d08a6d3756
+        uses: cupel-co/actions/.github/actions/version/generate@502558aad78e09cf95cb28d657ea824cc0237298
         with: 
           flow-type: '${{ inputs.flow-type }}'
         

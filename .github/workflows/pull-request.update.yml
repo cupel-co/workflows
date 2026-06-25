@@ -1,4 +1,4 @@
-﻿name: Pull Request Update
+name: Pull Request Update
 
 on:
   workflow_call:
@@ -21,6 +21,6 @@ jobs:
     steps:
       - name: Update
         id: update
-        uses: cupel-co/actions/.github/actions/pull-request/update@890cd45dab0f39bc1a680ba03cbe63d08a6d3756
+        uses: cupel-co/actions/.github/actions/pull-request/update@502558aad78e09cf95cb28d657ea824cc0237298
         with:
           environment: ${{ inputs.environment }}

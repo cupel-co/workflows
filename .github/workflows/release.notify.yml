@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Google Chat
-        uses: cupel-co/actions/.github/actions/release/notify@890cd45dab0f39bc1a680ba03cbe63d08a6d3756
+        uses: cupel-co/actions/.github/actions/release/notify@502558aad78e09cf95cb28d657ea824cc0237298
         with: 
           google-chat-webhook-url: '${{ secrets.google-chat-webhook-url }}'
           tag: '${{ inputs.tag }}'
